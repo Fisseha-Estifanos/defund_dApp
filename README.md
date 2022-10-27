@@ -30,6 +30,8 @@
 >
 > The mobile application will be used from the employee's side to record individual employee locations and interact with the smart contract such that the state of the individual employment agreement is accounted for as per the initial agreement with the employer.
 
+> Therefor, for this refund by location decentralized application, we are going to implement a smart contract on the Ethereum blockchain network that can record the locations of employees, manage several agreements between the employer and employees, and update the current status of the contract between the employee and employer based on the initial agreement.
+
 ## Requirements
 
 > Pip
