@@ -1,10 +1,366 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>FlaskBlog</title>
-</head>
-<body>
-   <h1>Welcome to FlaskBlog</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+<h1> {% block title %} Employer {% endblock %} </h1>
+{% block content %}
+    <br>
+    <h1> Welcome to the de fund by location dApp </h1>
+
+    <br>
+    <h4>Wallet Connection</h4>
+    <div id="connect" class="rounded border border-info">
+        <div class="container">
+            <div class="row">
+                <text>Status: </text>
+                <text id="connection_status">Not connected</text>
+            </div>
+            <div class="row">
+                <text>Address: </text>
+                <text id="connection_address">No address provided</text>
+            </div>
+            <div class="row" id="accounts">
+
+            </div>
+            <!-- <div class="row">
+                <text>Network: </text>
+                <text id="connection_network">No network detected</text>
+            </div> -->
+            
+            <br>
+            <div class="row">
+                <button id="connectButton" class="btn btn-primary" onclick="connectButtonClick()">Connect</button>
+            </div>
+            <!-- <br>
+            <div class="row">
+                <button id="get_account" class="btn btn-primary">Account</button>
+            </div> -->
+        </div>
+    </div>
+
+    <br>
+    <h4>Company details</h4>
+    <div id="company_details" class="rounded border border-info">
+        <div class="container">
+            <div class="row">
+                <text>Employer: </text>
+                <text id="employer_name"></text> 
+            </div>
+            <div class="row">
+                <text>Company: </text>
+                <text id="company_name"></text> 
+            </div>
+            <div class="row">
+                <text>Employer address: </text>
+                <text id="employer_address"></text> 
+            </div>
+
+            <br>
+            <div class="row">
+                <button id="get_company_details" class="btn btn-primary" onclick="getCompanyDetails()">Details</button>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <h4>Add employee</h4>
+    <div id="add_employees" class="rounded border border-info">
+        <div class="container">
+
+        </div>
+    </div>
+
+    <br>
+    <h4>Manage employee</h4>
+    <div id="manage_employees" class="rounded border border-info">
+        <div class="container">
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"  crossorigin="anonymous"></script>
+    <script>
+        //import { encrypt } from 'eth-sig-util'
+        //import MetaMaskOnboarding from '@metamask/onboarding'
+
+        //contract related setups
+        const contractAddress = "0x0DAe633B6bAEd379c60938A8916Ce63A6D12Da28"
+        
+
+        const abi = [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        }
+      ],
+      "name": "NewEmployee",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "employeeRole",
+          "type": "string"
+        }
+      ],
+      "name": "createEmployee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "balanceAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getAllEmployees",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "employerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "employeeAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contractDuration",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contractStartDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "employeeRole",
+              "type": "string"
+            },
+            {
+              "internalType": "enum Refund.ContractStatus",
+              "name": "contractStatus",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "balanceInWei",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct Refund.Employee[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getEmployer",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "company",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "employer_address",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Refund.Employer",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    }
+  ]
+
+
+        const web3 = new Web3("http://127.0.0.1:8545")
+        const smartContract = new web3.eth.Contract(abi, contractAddress)
+
+        let onboarding
+            try {
+                onboarding = new MetaMaskOnboarding({ forwarderOrigin })
+            } catch (error) {
+                console.error(error)
+        }
+        
+        const currentUrl = new URL(window.location.href)
+        const forwarderOrigin = currentUrl.hostname === 'localhost'
+            ? 'http://localhost:5000'
+            : undefined   
+
+        // Dapp Status Section
+        const networkDiv = document.getElementById('network')
+        const chainIdDiv = document.getElementById('chainId')
+        const accountsAddress = document.getElementById('connection_address')
+        const walletConnection = document.getElementById('connection_status')
+        
+        // the connect button
+        const onboardButton = document.getElementById('connectButton')
+
+        // check if metamask is installed 
+        const isMetaMaskInstalled = () => {
+            const { ethereum } = window
+            return Boolean(ethereum && ethereum.isMetaMask)
+        }
+
+        let accounts
+
+        // check if metamask is connected
+        const isMetaMaskConnected = () => accounts && accounts.length > 0
+
+        // to install metamask
+        const onClickInstall = () => {
+            onboardButton.innerText = 'Onboarding in progress'
+            onboardButton.disabled = true
+            onboarding.startOnboarding()
+        }
+
+        // to connect with metamask
+        const onClickConnect = async () => {
+            try {
+            const newAccounts = await ethereum.request({
+                method: 'eth_requestAccounts',
+            })
+            handleNewAccounts(newAccounts)
+            } catch (error) {
+            console.error(error)
+            }
+        }
+
+        // the one that populates the accounts
+        function handleNewAccounts (newAccounts) {
+            accounts = newAccounts
+            accountsAddress.innerHTML = accounts
+            walletConnection.innerHTML = "Connected"
+        }
+
+        // the connect button click event handler
+        function connectButtonClick() {
+            console.log("in connect event handler")
+            if (!isMetaMaskInstalled()) {
+                onboardButton.innerText = 'Click here to install MetaMask!'
+                onboardButton.onclick = onClickInstall
+                onboardButton.disabled = false
+            } else if (isMetaMaskConnected()) {
+                onboardButton.innerText = 'Connected'
+                onboardButton.disabled = true
+            if (onboarding) {
+                onboarding.stopOnboarding()
+            }
+            } else {
+                onboardButton.innerText = 'Connect'
+                onboardButton.onclick = onClickConnect
+                onboardButton.disabled = false
+            }
+        }
+        
+        // get the company details button event handler
+        function getCompanyDetails() {
+            console.log("in get company details  event handler")
+            try {
+                const {name: employerName, mame: companyName, adddrss: employerAddress} = smartContract.methods.getEmployer().call()
+            } catch (error) {
+            console.error(error)
+            }
+        }
+    </script>
+{% endblock %}
