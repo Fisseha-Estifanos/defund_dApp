@@ -32,8 +32,8 @@ contract Refund {
     // Employer data structure
     struct Employer {
         string name;
-        string company;
         address employer_address;
+        string company;
     }
 
     // declare our state variables
@@ -49,7 +49,7 @@ contract Refund {
 
     constructor() {
         // set the contract's owner (employer)
-        employer = Employer("f0xtr0t", "Forward Operations Base", msg.sender);
+        employer = Employer("f0xtr0t", msg.sender, "Forward Operations Base");
         numberOfEmployeesCount = 0;
     }
 
@@ -108,11 +108,19 @@ contract Refund {
 
     // a function to get all employees
     function getAllEmployees() public view returns (Employee[] memory) {
-         return (employees);
+        return (employees);
     }
 
     // a function to get the employer of this smart contract
     function getEmployer() public view returns (Employer memory) {
-        return (employer);
+        return employer;
+    }
+
+    function editCompanyDetails(
+        string memory name,
+        address addr,
+        string memory companyName
+    ) public {
+        employer = Employer(name, addr, companyName);
     }
 }
