@@ -122,7 +122,7 @@
               </div>
               <div class="row form-group">
                 <label class="form-label">Longitude</label>
-                <input type="number" class="form-control" id="employee_lon_" placeholder="input employee longitude"></input>
+                <input type="number" class="form-control" id="employee_lon" placeholder="input employee longitude"></input>
               </div>
               <div class="row form-group">
                 <label class="form-label">Longitude Offset</label>
@@ -188,7 +188,7 @@
       <div class="container">
         <div class="row form-group">
           <label class="form-label">Employee Id</label>
-          <input type="number" class="form-control" id="employee_range" placeholder="input employee id"></input>
+          <input type="number" class="form-control" id="employee_id" placeholder="input employee id"></input>
         </div>
         <div class="row">
           <button id="get_individual_employee_details" class="btn btn-primary" onclick="getIndividualEmployeeDetails()">Get Individual Employee Detail</button>
@@ -206,10 +206,49 @@
               <label class="form-label">Employee Address: </label>
               <label class="form-label" type="text" id="individual_employee_address">0xEEBA29E398c1d7acBf7B7C0f775767cd4e368893</label>
             </div>
+            <div class="row form-group">
+              <label class="form-label">Contract duration: </label>
+              <label class="form-label" type="number" id="individual_contract_duration">77</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Contract start date: </label>
+              <label class="form-label" type="number" id="individual_contract_start_date">5 6 2022</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Employee role: </label>
+              <label class="form-label" type="text" id="individual_employee_role">Role</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Contract status: </label>
+              <label class="form-label" type="number" id="individual_contract_status">0</label>
+            </div>
           </div>
 
           <div class="col-md-6">
-
+            <div class="row form-group">
+              <label class="form-label">Employee balance: </label>
+              <label class="form-label" type="number" id="individual_employee_balance">100000000</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Employee location (latitude): </label>
+              <label class="form-label" type="number" id="individual_employee_lat">392488884</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Employee location (latitude offset): </label>
+              <label class="form-label" type="number" id="individual_employee_lat_offset">2</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Employee location (longitude): </label>
+              <label class="form-label" type="number" id="individual_employee_lon">392488884</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Employee location (longitude offset): </label>
+              <label class="form-label" type="number" id="individual_employee_lon_offset">2</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Accepted Range: </label>
+              <label class="form-label" type="number" id="individual_employee_accepted_range">700</label>
+            </div>
           </div>
         </div>
       </div>
@@ -628,12 +667,9 @@
 
         // get the company details button event handler
         async function getCompanyDetails() {
-            console.log("in get company details  event handler")
+            console.log("in get company details event handler")
             try {
                 const companyDetails = await smartContract.methods.employer().call();
-                // console.log(companyDetails.name);
-                // console.log(companyDetails.company);
-                // console.log(companyDetails.employer_address);
                 empName.innerHTML = companyDetails.name
                 compName.innerHTML = companyDetails.company
                 empAdd.innerHTML = companyDetails.employer_address
@@ -641,5 +677,65 @@
                 console.error(error)
             }
         }
+
+        // the add employee button event handler
+        async function addEmployee() {
+          console.log("in add employee event handler");
+          try {
+            const emp_name = document.getElementById('employee_name').value;
+            const emp_address = document.getElementById('employee_address').value;
+            const contract_dur = document.getElementById('contract_duration').value;
+            const emp_role = document.getElementById('employee_role').value;
+            const emp_lat = document.getElementById('employee_lat').value;
+            const emp_lat_off = document.getElementById('employee_lat_offset').value;
+            const emp_lon = document.getElementById('employee_lon').value;
+            const emp_lon_off = document.getElementById('employee_lon_offset').value;
+            const emp_range = document.getElementById('accepted_range').value;            
+            console.log(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range);
+            
+
+            const addEmp = await smartContract.methods.createEmployee(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range).call();
+          } catch (error) {
+                console.error(error);
+          }
+        }
+
+        // the get total number of employees button event handler
+        async function getNumberOfEmployees () {
+          console.log("in get total number of employees event handler");
+          try {
+            const tot_num = await smartContract.methods.numberOfEmployeesCount().call();
+            const tot_emp_num_label = document.getElementById('number_of_employees');
+            tot_emp_num_label.innerHTML = tot_num;
+          } catch (error) {
+              console.error(error);
+          }
+        }
+
+        // get individual employee details event handler
+        async function getIndividualEmployeeDetails() {
+          // get the desired id
+          const the_employee_id = document.getElementById('employee_id').value;
+
+          // get the individual employee
+          const individual_employee = await smartContract.methods.employees(the_employee_id).call();
+
+          // set the individual employee details
+          const ind_emp_name = document.getElementById('individual_employee_name');
+          const ind_emp_addr = document.getElementById('individual_employee_address');
+          const ind_emp_contract_dur = document.getElementById('individual_contract_duration');
+          const ind_emp_start_date = document.getElementById('individual_contract_start_date');
+          const ind_emp_role = document.getElementById('individual_employee_role');
+          const ind_emp_contract_status = document.getElementById('individual_contract_status');
+          const ind_emp_balance = document.getElementById('individual_employee_balance');
+          const ind_emp_loc_lat = document.getElementById('individual_employee_lat');
+          const ind_emp_loc_lat_offset = document.getElementById('individual_employee_lat_offset');
+          const ind_emp_loc_lon = document.getElementById('individual_employee_lon');
+          const ind_emp_loc_lon_offset = document.getElementById('individual_employee_lon_offset');
+          const ind_emp_accepted_range = document.getElementById('individual_employee_accepted_range');
+
+        }
+
+
     </script>
 {% endblock %}
