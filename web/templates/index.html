@@ -200,70 +200,87 @@
           <div class="col-md-6">
             <div class="row form-group">
               <label class="form-label">Employee Name: </label>
-              <label class="form-label" type="text" id="individual_employee_name">Fish</label>
+              <label class="form-label" type="text" id="individual_employee_name"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Employee Address: </label>
-              <label class="form-label" type="text" id="individual_employee_address">0xEEBA29E398c1d7acBf7B7C0f775767cd4e368893</label>
+              <label class="form-label" type="text" id="individual_employee_address"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Contract duration: </label>
-              <label class="form-label" type="number" id="individual_contract_duration">77</label>
+              <label class="form-label" type="number" id="individual_contract_duration"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Contract start date: </label>
-              <label class="form-label" type="number" id="individual_contract_start_date">5 6 2022</label>
+              <label class="form-label" type="number" id="individual_contract_start_date"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Employee role: </label>
-              <label class="form-label" type="text" id="individual_employee_role">Role</label>
+              <label class="form-label" type="text" id="individual_employee_role"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Contract status: </label>
-              <label class="form-label" type="number" id="individual_contract_status">0</label>
+              <label class="form-label" type="number" id="individual_contract_status"></label>
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="row form-group">
               <label class="form-label">Employee balance: </label>
-              <label class="form-label" type="number" id="individual_employee_balance">100000000</label>
+              <label class="form-label" type="number" id="individual_employee_balance"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Employee location (latitude): </label>
-              <label class="form-label" type="number" id="individual_employee_lat">392488884</label>
+              <label class="form-label" type="number" id="individual_employee_lat"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Employee location (latitude offset): </label>
-              <label class="form-label" type="number" id="individual_employee_lat_offset">2</label>
+              <label class="form-label" type="number" id="individual_employee_lat_offset"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Employee location (longitude): </label>
-              <label class="form-label" type="number" id="individual_employee_lon">392488884</label>
+              <label class="form-label" type="number" id="individual_employee_lon"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Employee location (longitude offset): </label>
-              <label class="form-label" type="number" id="individual_employee_lon_offset">2</label>
+              <label class="form-label" type="number" id="individual_employee_lon_offset"></label>
             </div>
             <div class="row form-group">
               <label class="form-label">Accepted Range: </label>
-              <label class="form-label" type="number" id="individual_employee_accepted_range">700</label>
+              <label class="form-label" type="number" id="individual_employee_accepted_range"></label>
             </div>
           </div>
         </div>
       </div>
     </div>
 
+    <br>
+    <h4>Account balance</h4>
+    <div id="account_balance_container" class="rounded border border-info form-group p-3 mb-2 text-dark">
+      <div class="container">
+        <div class="row form-group"">
+          <label class="form-label">Account address</label>
+          <input type="text" class="form-control" id="account_address" placeholder="input account address"></input>
+        </div>
+        <div class="row">
+          <label class="form-label">Account balance: </label>
+          <label type="number" class="form-label" id="account_balance"></input>
+        </div>
+
+        <div class="row">
+          <button id="get_account_balance" class="btn btn-primary" onclick="getAccountBalance()">Get Balance</button>
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"  crossorigin="anonymous"></script>
     <script>
-        //import { encrypt } from 'eth-sig-util'
-        //import MetaMaskOnboarding from '@metamask/onboarding'
-
         //contract related setups
-        const contractAddress = "0xEEBA29E398c1d7acBf7B7C0f775767cd4e368893"
-        
+        const networkId = "http://127.0.0.1:8545"
+        console.log("Current network Id: " + networkId)
 
+        const contractAddress = "0x778DA2a0DA997DB5E740ee6F989f1deC28598B94"
+        
         const abi = [
     {
       "inputs": [],
@@ -576,50 +593,44 @@
       "stateMutability": "view",
       "type": "function",
       "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getEmployer",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "company",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "employer_address",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Refund.Employer",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
     }
   ]
 
-        const web3 = new Web3("http://127.0.0.1:8545")
+        const web3 = new Web3(networkId)
         const smartContract = new web3.eth.Contract(abi, contractAddress)
-
-        let onboarding
-            try {
-                onboarding = new MetaMaskOnboarding({ forwarderOrigin })
-            } catch (error) {
-                console.error(error)
-        }
         
-        const currentUrl = new URL(window.location.href)
-        const forwarderOrigin = currentUrl.hostname === 'localhost'
-            ? 'http://localhost:5000'
-            : undefined   
-
-        // Dapp Status Section
-        const networkDiv = document.getElementById('network')
-        const chainIdDiv = document.getElementById('chainId')
-        const accountsAddress = document.getElementById('connection_address')
-        const walletConnection = document.getElementById('connection_status')
-        
-        // the connect button
-        const onboardButton = document.getElementById('connectButton')
-
-        // check if metamask is installed 
-        const isMetaMaskInstalled = () => {
-            const { ethereum } = window
-            return Boolean(ethereum && ethereum.isMetaMask)
-        }
-
         let accounts
-
-        // check if metamask is connected
-        const isMetaMaskConnected = () => accounts && accounts.length > 0
-
-        // to install metamask
-        const onClickInstall = () => {
-            onboardButton.innerText = 'Onboarding in progress'
-            onboardButton.disabled = true
-            onboarding.startOnboarding()
-        }
 
         // to connect with metamask
         const onClickConnect = async () => {
@@ -627,52 +638,43 @@
             const newAccounts = await ethereum.request({
                 method: 'eth_requestAccounts',
             })
-            handleNewAccounts(newAccounts)
+            await handleNewAccounts(newAccounts)
+
             } catch (error) {
             console.error(error)
             }
         }
 
         // the one that populates the accounts
-        function handleNewAccounts (newAccounts) {
+        async function handleNewAccounts (newAccounts) {
+            const accountsAddress = document.getElementById('connection_address')
+            const walletConnection = document.getElementById('connection_status')
+
             accounts = newAccounts
             accountsAddress.innerHTML = accounts
             walletConnection.innerHTML = "Connected"
+            console.log("In handle new accounts")
+            console.log(accounts[0])
         }
 
         // the connect button click event handler
-        function connectButtonClick() {
-            console.log("in connect event handler")
-            if (!isMetaMaskInstalled()) {
-                onboardButton.innerText = 'Click here to install MetaMask!'
-                onboardButton.onclick = onClickInstall
-                onboardButton.disabled = false
-            } else if (isMetaMaskConnected()) {
-                onboardButton.innerText = 'Connected'
-                onboardButton.disabled = true
-            if (onboarding) {
-                onboarding.stopOnboarding()
-            }
-            } else {
-                onboardButton.innerText = 'Connect'
-                onboardButton.onclick = onClickConnect
-                onboardButton.disabled = false
-            }
+        async function connectButtonClick() {
+            await onClickConnect()
         }
         
-        // the connect button
-        const empName = document.getElementById('employer_name')
-        const compName = document.getElementById('company_name')
-        const empAdd = document.getElementById('employer_address')
-
-        // get the company details button event handler
+        // the company details button event handler
         async function getCompanyDetails() {
             console.log("in get company details event handler")
             try {
+                const empName = document.getElementById('employer_name')
+                const compName = document.getElementById('company_name')
+                const empAdd = document.getElementById('employer_address')
+
                 const companyDetails = await smartContract.methods.employer().call();
                 empName.innerHTML = companyDetails.name
                 compName.innerHTML = companyDetails.company
                 empAdd.innerHTML = companyDetails.employer_address
+
             } catch (error) {
                 console.error(error)
             }
@@ -692,9 +694,10 @@
             const emp_lon_off = document.getElementById('employee_lon_offset').value;
             const emp_range = document.getElementById('accepted_range').value;            
             console.log(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range);
-            
+            console.log("From account: " + accounts[0])
 
-            const addEmp = await smartContract.methods.createEmployee(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range).call();
+            const addEmp = await smartContract.methods.createEmployee(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range).send({ from: accounts[0] });
+
           } catch (error) {
                 console.error(error);
           }
@@ -707,6 +710,7 @@
             const tot_num = await smartContract.methods.numberOfEmployeesCount().call();
             const tot_emp_num_label = document.getElementById('number_of_employees');
             tot_emp_num_label.innerHTML = tot_num;
+
           } catch (error) {
               console.error(error);
           }
@@ -714,28 +718,67 @@
 
         // get individual employee details event handler
         async function getIndividualEmployeeDetails() {
-          // get the desired id
-          const the_employee_id = document.getElementById('employee_id').value;
+          console.log("in get individual employee details event handler");
+          try {
+            // get the desired id
+            const the_employee_id = document.getElementById('employee_id').value;
+            console.log(the_employee_id)
+            // get the individual employee
+            const individual_employee = await smartContract.methods.employees(the_employee_id).call();
 
-          // get the individual employee
-          const individual_employee = await smartContract.methods.employees(the_employee_id).call();
+            // set the individual employee details
+            const ind_emp_name = document.getElementById('individual_employee_name');
+            const ind_emp_addr = document.getElementById('individual_employee_address');
+            const ind_emp_contract_dur = document.getElementById('individual_contract_duration');
+            const ind_emp_start_date = document.getElementById('individual_contract_start_date');
+            const ind_emp_role = document.getElementById('individual_employee_role');
+            const ind_emp_contract_status = document.getElementById('individual_contract_status');
+            const ind_emp_balance = document.getElementById('individual_employee_balance');
+            const ind_emp_loc_lat = document.getElementById('individual_employee_lat');
+            const ind_emp_loc_lat_offset = document.getElementById('individual_employee_lat_offset');
+            const ind_emp_loc_lon = document.getElementById('individual_employee_lon');
+            const ind_emp_loc_lon_offset = document.getElementById('individual_employee_lon_offset');
+            const ind_emp_accepted_range = document.getElementById('individual_employee_accepted_range');
+            console.log("got all labels")
 
-          // set the individual employee details
-          const ind_emp_name = document.getElementById('individual_employee_name');
-          const ind_emp_addr = document.getElementById('individual_employee_address');
-          const ind_emp_contract_dur = document.getElementById('individual_contract_duration');
-          const ind_emp_start_date = document.getElementById('individual_contract_start_date');
-          const ind_emp_role = document.getElementById('individual_employee_role');
-          const ind_emp_contract_status = document.getElementById('individual_contract_status');
-          const ind_emp_balance = document.getElementById('individual_employee_balance');
-          const ind_emp_loc_lat = document.getElementById('individual_employee_lat');
-          const ind_emp_loc_lat_offset = document.getElementById('individual_employee_lat_offset');
-          const ind_emp_loc_lon = document.getElementById('individual_employee_lon');
-          const ind_emp_loc_lon_offset = document.getElementById('individual_employee_lon_offset');
-          const ind_emp_accepted_range = document.getElementById('individual_employee_accepted_range');
+            ind_emp_name.innerHTML = individual_employee.name
+            ind_emp_addr.innerHTML = individual_employee.employeeAddress
+            ind_emp_contract_dur.innerHTML = individual_employee.contractDuration
+            ind_emp_start_date.innerHTML = individual_employee.contractStartDate
+            ind_emp_role.innerHTML = individual_employee.employeeRole
+            ind_emp_contract_status.innerHTML = individual_employee.contractStatus
+            ind_emp_balance.innerHTML = individual_employee.balanceInWei
+            ind_emp_loc_lat.innerHTML = individual_employee.locLat
+            ind_emp_loc_lat_offset.innerHTML = individual_employee.latOffset
+            ind_emp_loc_lon.innerHTML = individual_employee.locLon
+            ind_emp_loc_lon_offset.innerHTML = individual_employee.lonOffset
+            ind_emp_accepted_range.innerHTML = individual_employee.acceptedRange
+            console.log("set all labels")
 
+          } catch (error) {
+              console.error(error);
+              alert(error);
+          }
         }
 
+        // get account balance event handler
+        async function getAccountBalance() {
+          console.log("in get account balance")
+          try {
+            // get the account address
+            const acc_add = document.getElementById('account_address').value;
 
+            // get the account balance
+            const acc_bal = await smartContract.methods.getBalance(acc_add).call();
+
+            // get the html label and update with the account address
+            const bal_label = document.getElementById('account_balance')
+            bal_label.innerHTML = acc_bal
+
+          } catch (error) {
+              console.error(error);
+              alert(error);
+          }
+        }
     </script>
 {% endblock %}
