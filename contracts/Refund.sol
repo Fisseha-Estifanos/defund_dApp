@@ -15,13 +15,18 @@ contract Refund {
     // Employee data structure
     struct Employee {
         string name;
-        address employerAddress;
+        //address employerAddress;
         address employeeAddress;
         uint256 contractDuration;
         uint256 contractStartDate;
         string employeeRole;
         ContractStatus contractStatus;
         uint256 balanceInWei;
+        uint256 locLat;
+        uint256 latOffset;
+        uint256 locLon;
+        uint256 lonOffset;
+        uint256 acceptedRange;
     }
 
     // Employer data structure
@@ -33,13 +38,19 @@ contract Refund {
 
     // declare our state variables
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
+
     event NewEmployee(string name, address employeeAddress);
-    Employer private employer;
-    Employee[] private employees;
+
+    Employer public employer;
+
+    Employee[] public employees;
+
+    uint256 public numberOfEmployeesCount;
 
     constructor() {
         // set the contract's owner (employer)
-        employer = Employer("f0x - tr0t", "FOB", msg.sender);
+        employer = Employer("f0xtr0t", "Forward Operations Base", msg.sender);
+        numberOfEmployeesCount = 0;
     }
 
     // A method to create employees
@@ -47,8 +58,13 @@ contract Refund {
         string memory name,
         address employeeAddress,
         uint256 contractDuration,
-        string memory employeeRole
-    ) public {
+        string memory employeeRole,
+        uint256 latitude,
+        uint256 latitudeOffset,
+        uint256 longitude,
+        uint256 longOffset,
+        uint256 acceptedRange
+    ) public payable {
         // the contract starting date
         uint256 startDate = block.timestamp;
 
@@ -61,17 +77,29 @@ contract Refund {
         employees.push(
             Employee(
                 name,
-                msg.sender,
+                //msg.sender,
                 employeeAddress,
                 contractDuration,
                 startDate,
                 employeeRole,
                 initialContractStatus,
-                currentBalanceOfEmployee
+                currentBalanceOfEmployee,
+                latitude,
+                latitudeOffset,
+                longitude,
+                longOffset,
+                acceptedRange
             )
         );
+        numberOfEmployeesCount++;
         emit NewEmployee(name, employeeAddress);
+        //addToIPFS();
     }
+
+    // A method to add employees to IPFS
+    // function addEmployeeToIPFS() private view returns () {
+    //     // add employee to IPFS
+    // }
 
     // A method to get balance in wei
     function getBalance(address balanceAddress) public view returns (uint256) {
@@ -80,11 +108,11 @@ contract Refund {
 
     // a function to get all employees
     function getAllEmployees() public view returns (Employee[] memory) {
-        return employees;
+         return (employees);
     }
 
     // a function to get the employer of this smart contract
     function getEmployer() public view returns (Employer memory) {
-        return employer;
+        return (employer);
     }
 }
