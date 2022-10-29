@@ -7,81 +7,222 @@
 
     <br>
     <h4>Wallet Connection</h4>
-    <div id="connect" class="rounded border border-info">
+    <div id="connect" class="rounded border border-info form-group p-3 mb-2 text-dark">
         <div class="container">
-            <div class="row">
-                <text>Status: </text>
-                <text id="connection_status">Not connected</text>
+            <div class="row form-label">
+                <label>Status: </label>
+                <label id="connection_status">Not connected</label>
             </div>
-            <div class="row">
-                <text>Address: </text>
-                <text id="connection_address">No address provided</text>
+            <div class="row form-label">
+                <label>Address: </label>
+                <label id="connection_address">No address provided</label>
             </div>
-            <div class="row" id="accounts">
 
-            </div>
-            <!-- <div class="row">
-                <text>Network: </text>
-                <text id="connection_network">No network detected</text>
-            </div> -->
-            
-            <br>
             <div class="row">
                 <button id="connectButton" class="btn btn-primary" onclick="connectButtonClick()">Connect</button>
             </div>
-            <!-- <br>
-            <div class="row">
-                <button id="get_account" class="btn btn-primary">Account</button>
-            </div> -->
         </div>
     </div>
 
     <br>
-    <h4>Company details</h4>
-    <div id="company_details" class="rounded border border-info">
+    <h4>Company</h4>
+    <div id="company_details" class="rounded border border-info form-group p-3 mb-2 text-dark">
+      <div class="row">
+        <div class="col-md">
+          <h4>Company Details</h4>
+          <div id="company_details" class="rounded border border-info form-group p-3 mb-2 text-dark">
+              <div class="container">
+                  <div class="row form-label">
+                      <label>Employee Name: </label>
+                  </div>
+                  <div class="row form-label">
+                    <label id="employer_name"></label> 
+                  </div>
+
+                  <div class="row form-label">
+                    <label>Employee Address: </label>
+                  </div>
+                  <div class="row form-label">
+                    <label id="employer_address"></label> 
+                  </div>
+
+                  <div class="row form-label">
+                      <label>Company Name: </label>
+                  </div>
+                  <div class="row form-label">
+                    <label id="company_name"></label> 
+                  </div>
+                  
+                  <div class="row">
+                      <button id="get_company_details" class="btn btn-primary" onclick="getCompanyDetails()">Details</button>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-md">
+          <h4>Edit company Details</h4>
+          <div id="edit_company_details" class="rounded border border-info form-group p-3 mb-2 text-dark">
+            <div class="container">
+              <div class="row form-label">
+                <label>Employee Name: </label>
+                <input class="form-control" id="edit_employer_name"></input> 
+              </div>
+              <div class="row form-label">
+                <label>Employee Address: </label>
+                <input class="form-control" id="edit_employer_address"></input> 
+              </div>
+              <div class="row form-label">
+                <label>Company Name: </label>
+                <input class="form-control" id="edit_company_name"></input> 
+              </div>
+
+              <br>
+              <div class="row">
+                <button id="edit_company_details" class="btn btn-primary" onclick="editCompanyDetails()">Edit Details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <h4>Add Employee</h4>
+    <div id="add_employees" class="rounded border border-info form-group p-3 mb-2 text-dark">
         <div class="container">
-            <div class="row">
-                <text>Employer: </text>
-                <text id="employer_name"></text> 
-            </div>
-            <div class="row">
-                <text>Company: </text>
-                <text id="company_name"></text> 
-            </div>
-            <div class="row">
-                <text>Employer address: </text>
-                <text id="employer_address"></text> 
+          <div class="row">
+            <div class="col-md-6">
+              <div class="row form-group">
+                <label class="form-label">Employee Name</label>
+                <input type="text" style="margin-right:0.5cm" class="form-control" id="employee_name" placeholder="input employee name"></input>
+              </div>
+              <div class="row form-group">
+                <label class="form-label">Employee Address</label>
+                <input type="text" style="margin-right:0.5cm" class="form-control" id="employee_address" placeholder="input employee address"></input>
+              </div>
+              <div class="row form-group">
+                <label class="form-label">Contract Duration</label>
+                <input type="number" style="margin-right:0.5cm"  class="form-control" id="contract_duration" placeholder="input contract duration"></input>
+              </div>
+              <div class="row form-group">
+                <label class="form-label">Employee Role</label>
+                <input type="text" style="margin-right:0.5cm"  class="form-control" id="employee_role" placeholder="input employee role"></input>
+              </div>
+              <div class="row form-group">
+                <label class="form-label">Latitude</label>
+                <input type="number" style="margin-right:0.5cm"  class="form-control" id="employee_lat" placeholder="input employee latitude"></input>
+              </div>
             </div>
 
-            <br>
-            <div class="row">
-                <button id="get_company_details" class="btn btn-primary" onclick="getCompanyDetails()">Details</button>
+            <div class="col-md-6">
+              <div class="row form-group">
+                <label class="form-label">Latitude Offset</label>
+                <input type="number" class="form-control" id="employee_lat_offset" placeholder="input employee latitude offset"></input>
+              </div>
+              <div class="row form-group">
+                <label class="form-label">Longitude</label>
+                <input type="number" class="form-control" id="employee_lon_" placeholder="input employee longitude"></input>
+              </div>
+              <div class="row form-group">
+                <label class="form-label">Longitude Offset</label>
+                <input type="number" class="form-control" id="employee_lon_offset" placeholder="input employee longitude offset"></input>
+              </div>
+              <div class="row form-group">
+                <label class="form-label">Accepted Range</label>
+                <input type="number" class="form-control" id="accepted_range" placeholder="input employee accepted range"></input>
+              </div>
             </div>
+          </div>
+          <div class="row">
+            <button id="add_employee" class="btn btn-primary" onclick="addEmployee()">Add Employee</button>
+        </div>
         </div>
     </div>
 
     <br>
-    <h4>Add employee</h4>
-    <div id="add_employees" class="rounded border border-info">
+    <h4>Manage Employees</h4>
+    <div id="manage_employees" class="rounded border border-info form-group p-3 mb-2 text-dark">
+      <h5>Total employees</h5>
         <div class="container">
-
+          <div class="row">
+            <label class="form-label" id="number_of_employees"> 55</label>
+          </div>
+          <div class="row form-group">
+            <button id="get_number_of_employee" class="btn btn-primary" onclick="getNumberOfEmployees()">Get Total Employee</button>
+          </div>
         </div>
     </div>
 
-    <br>
-    <h4>Manage employee</h4>
-    <div id="manage_employees" class="rounded border border-info">
-        <div class="container">
-
+    <div id="employee_details" class="rounded border border-info form-group p-3 mb-2 text-dark">
+      <h5>Employee Details</h5>
+      <div class="container">
+        <div class="row form-group">
+          <div id="employye_details">
+            <table>
+              <th>Employee Details</th>
+              <tr>
+                <td> d1 </td> <td> d2 </td> <td> d3 </td>
+              </tr>
+              <tr>
+                <td> d1 </td> <td> d2 </td> <td> d3 </td>
+              </tr>
+              <tr>
+                <td> d1 </td> <td> d2 </td> <td> d3 </td>
+              </tr>
+              <tr>
+                <td> d1 </td> <td> d2 </td> <td> d3 </td>
+              </tr>
+            </table>
+          </div>
         </div>
+
+        <div class="row">
+          <button id="get_employee_details" class="btn btn-primary" onclick="getEmployeeDetails()">Get Employee Details</button>
+        </div>
+      </div>
     </div>
+    
+    <div id="individual_employee_details" class="rounded border border-info form-group p-3 mb-2 text-dark">
+      <h5>Individual Employee Detail</h5>
+      <div class="container">
+        <div class="row form-group">
+          <label class="form-label">Employee Id</label>
+          <input type="number" class="form-control" id="employee_range" placeholder="input employee id"></input>
+        </div>
+        <div class="row">
+          <button id="get_individual_employee_details" class="btn btn-primary" onclick="getIndividualEmployeeDetails()">Get Individual Employee Detail</button>
+        </div>
+
+        <br>
+        <br>
+        <div id="individual_detail_holder" class="row">
+          <div class="col-md-6">
+            <div class="row form-group">
+              <label class="form-label">Employee Name: </label>
+              <label class="form-label" type="text" id="individual_employee_name">Fish</label>
+            </div>
+            <div class="row form-group">
+              <label class="form-label">Employee Address: </label>
+              <label class="form-label" type="text" id="individual_employee_address">0xEEBA29E398c1d7acBf7B7C0f775767cd4e368893</label>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"  crossorigin="anonymous"></script>
     <script>
         //import { encrypt } from 'eth-sig-util'
         //import MetaMaskOnboarding from '@metamask/onboarding'
 
         //contract related setups
-        const contractAddress = "0x0DAe633B6bAEd379c60938A8916Ce63A6D12Da28"
+        const contractAddress = "0xEEBA29E398c1d7acBf7B7C0f775767cd4e368893"
         
 
         const abi = [
@@ -137,6 +278,119 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "employees",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractStartDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "employeeRole",
+          "type": "string"
+        },
+        {
+          "internalType": "enum Refund.ContractStatus",
+          "name": "contractStatus",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "balanceInWei",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locLat",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locLon",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lonOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "acceptedRange",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "employer",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "company",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "employer_address",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "numberOfEmployeesCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
           "internalType": "string",
           "name": "name",
           "type": "string"
@@ -155,12 +409,38 @@
           "internalType": "string",
           "name": "employeeRole",
           "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latitude",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latitudeOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "longitude",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "longOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "acceptedRange",
+          "type": "uint256"
         }
       ],
       "name": "createEmployee",
       "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -195,11 +475,6 @@
             },
             {
               "internalType": "address",
-              "name": "employerAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "address",
               "name": "employeeAddress",
               "type": "address"
             },
@@ -227,6 +502,31 @@
               "internalType": "uint256",
               "name": "balanceInWei",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "locLat",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "latOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "locLon",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lonOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "acceptedRange",
+              "type": "uint256"
             }
           ],
           "internalType": "struct Refund.Employee[]",
@@ -237,40 +537,8 @@
       "stateMutability": "view",
       "type": "function",
       "constant": true
-    },
-    {
-      "inputs": [],
-      "name": "getEmployer",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "company",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "employer_address",
-              "type": "address"
-            }
-          ],
-          "internalType": "struct Refund.Employer",
-          "name": "",
-          "type": "tuple"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
     }
   ]
-
 
         const web3 = new Web3("http://127.0.0.1:8545")
         const smartContract = new web3.eth.Contract(abi, contractAddress)
@@ -353,13 +621,24 @@
             }
         }
         
+        // the connect button
+        const empName = document.getElementById('employer_name')
+        const compName = document.getElementById('company_name')
+        const empAdd = document.getElementById('employer_address')
+
         // get the company details button event handler
-        function getCompanyDetails() {
+        async function getCompanyDetails() {
             console.log("in get company details  event handler")
             try {
-                const {name: employerName, mame: companyName, adddrss: employerAddress} = smartContract.methods.getEmployer().call()
+                const companyDetails = await smartContract.methods.employer().call();
+                // console.log(companyDetails.name);
+                // console.log(companyDetails.company);
+                // console.log(companyDetails.employer_address);
+                empName.innerHTML = companyDetails.name
+                compName.innerHTML = companyDetails.company
+                empAdd.innerHTML = companyDetails.employer_address
             } catch (error) {
-            console.error(error)
+                console.error(error)
             }
         }
     </script>
