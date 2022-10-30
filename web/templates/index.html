@@ -276,10 +276,10 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"  crossorigin="anonymous"></script>
     <script>
         //contract related setups
-        const networkId = "http://127.0.0.1:8545"
+        const networkId = "http://127.0.0.1:7545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0x778DA2a0DA997DB5E740ee6F989f1deC28598B94"
+        const contractAddress = "0xB8b9458624019b222766F6c7fD4972399E7f8262"
         
         const abi = [
     {
@@ -416,14 +416,14 @@
           "type": "string"
         },
         {
-          "internalType": "string",
-          "name": "company",
-          "type": "string"
-        },
-        {
           "internalType": "address",
           "name": "employer_address",
           "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "company",
+          "type": "string"
         }
       ],
       "stateMutability": "view",
@@ -606,14 +606,14 @@
               "type": "string"
             },
             {
-              "internalType": "string",
-              "name": "company",
-              "type": "string"
-            },
-            {
               "internalType": "address",
               "name": "employer_address",
               "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "company",
+              "type": "string"
             }
           ],
           "internalType": "struct Refund.Employer",
@@ -624,6 +624,29 @@
       "stateMutability": "view",
       "type": "function",
       "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "companyName",
+          "type": "string"
+        }
+      ],
+      "name": "editCompanyDetails",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ]
 
