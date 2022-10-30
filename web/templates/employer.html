@@ -289,7 +289,7 @@
         const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0x032feB1962115C7fa15eDDE2a2F17a2dB29eeE44"
+        const contractAddress = "0xEfe434eeb4D1F0B4d7b3F3Afc2e346E9b1c9DcFe"
         
         const abi =  [
     {
@@ -313,7 +313,32 @@
           "type": "address"
         }
       ],
-      "name": "NewEmployee",
+      "name": "EmployeeAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "date",
+          "type": "uint256"
+        }
+      ],
+      "name": "LocationTracked",
       "type": "event"
     },
     {
@@ -550,8 +575,72 @@
       "constant": true
     },
     {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "locations",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locLat",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locLon",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lonOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locationUpdateDate",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
       "inputs": [],
       "name": "numberOfEmployeesCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "numberOfTrackedLocations",
       "outputs": [
         {
           "internalType": "uint256",
@@ -612,6 +701,35 @@
         }
       ],
       "name": "createEmployee",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "latitude",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latitudeOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "longitude",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "longOffset",
+          "type": "uint256"
+        }
+      ],
+      "name": "trackLocation",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -813,7 +931,6 @@
       "type": "function"
     }
   ]
-
         const web3 = new Web3(networkId)
         const smartContract = new web3.eth.Contract(abi, contractAddress)
         
