@@ -7,7 +7,7 @@ contract Refund {
     // several contract states
     enum ContractStatus {
         SIGNED,
-        COMPLETED,
+        ACTIVATED,
         REJECTED,
         ENDED
     }
@@ -15,16 +15,15 @@ contract Refund {
     // Employee data structure
     struct Employee {
         string name;
-        //address employerAddress;
         address employeeAddress;
         uint256 contractDuration;
         uint256 contractStartDate;
         string employeeRole;
         ContractStatus contractStatus;
         uint256 balanceInWei;
-        uint256 locLat;
+        int256 locLat;
         uint256 latOffset;
-        uint256 locLon;
+        int256 locLon;
         uint256 lonOffset;
         uint256 acceptedRange;
     }
@@ -36,25 +35,41 @@ contract Refund {
         string company;
     }
 
+    // Employer location tracker structure
+    struct Locations {
+        string name;
+        address employeeAddress;
+        int256 locLat;
+        uint256 latOffset;
+        int256 locLon;
+        uint256 lonOffset;
+        uint256 locationUpdateDate;
+    }
+
     // declare our state variables
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
-    event NewEmployee(string name, address employeeAddress);
+    event EmployeeAdded(string name, address employeeAddress);
+    event LocationTracked(string name, address employeeAddress, uint256 date);
 
     Employer public employer;
 
     Employee[] public employees;
+    Locations[] public locations;
     mapping(address => Employee) public employeez;
-    mapping(uint => address) public employeesAddress;
+    mapping(uint256 => address) public employeesAddress;
 
     uint256 public numberOfEmployeesCount;
+    uint256 public numberOfTrackedLocations;
 
     string public compDetailUpdateStatus;
 
     constructor() {
         // set the contract's owner (employer)
         employer = Employer("f0xtr0t", msg.sender, "Forward Operations Base");
+
         numberOfEmployeesCount = 0;
+        numberOfTrackedLocations = 0;
         compDetailUpdateStatus = "";
     }
 
@@ -64,9 +79,9 @@ contract Refund {
         address employeeAddress,
         uint256 contractDuration,
         string memory employeeRole,
-        uint256 latitude,
+        int256 latitude,
         uint256 latitudeOffset,
-        uint256 longitude,
+        int256 longitude,
         uint256 longOffset,
         uint256 acceptedRange
     ) public payable {
@@ -82,7 +97,6 @@ contract Refund {
         employees.push(
             Employee(
                 name,
-                ////msg.sender,
                 employeeAddress,
                 contractDuration,
                 startDate,
@@ -99,7 +113,6 @@ contract Refund {
 
         employeez[employeeAddress] = Employee(
             name,
-            ////msg.sender,
             employeeAddress,
             contractDuration,
             startDate,
@@ -114,39 +127,99 @@ contract Refund {
         );
         employeesAddress[numberOfEmployeesCount] = employeeAddress;
         numberOfEmployeesCount++;
-
-        emit NewEmployee(name, employeeAddress);
-        //addToIPFS();
+        emit EmployeeAdded(name, employeeAddress);
     }
 
-    // A method to add employees to IPFS
-    // function addEmployeeToIPFS() private view returns () {
-    //     // add employee to IPFS
-    // }
+    // A method to track employee location
+    function trackLocation(
+        int256 latitude,
+        uint256 latitudeOffset,
+        int256 longitude,
+        uint256 longOffset
+    ) public payable {
+        // the location track date
+        uint256 locationUpdatedAt = block.timestamp;
+
+        // the employee name
+        string memory employeeName = employeez[msg.sender].name;
+
+        locations.push(
+            Locations(
+                employeeName,
+                msg.sender,
+                latitude,
+                latitudeOffset,
+                longitude,
+                longOffset,
+                locationUpdatedAt
+            )
+        );
+
+        numberOfTrackedLocations++;
+        emit LocationTracked(employeeName, msg.sender, locationUpdatedAt);
+    }
 
     // A method to get balance in wei
     function getBalance(address balanceAddress) public view returns (uint256) {
         return balanceAddress.balance;
     }
 
-    // a function to get all employees
+    // a method to get all employees
     function getAllEmployeez() public view returns (Employee[] memory) {
         Employee[] memory ret = new Employee[](numberOfEmployeesCount);
-        for (uint i = 0; i < numberOfEmployeesCount; i++) {
+        for (uint256 i = 0; i < numberOfEmployeesCount; i++) {
             ret[i] = employeez[employeesAddress[i]];
         }
         return ret;
     }
 
-    // a function to get all employees
+    // a method to get all employees
     function getAllEmployees() public view returns (Employee[] memory) {
         return employees;
     }
 
-    // // a function to get the employer of this smart contract
-    // // function getEmployer() public view returns (Employer memory) {
-    // //     return employer;
-    // // }
+    // a method that calculates square root
+    function sqrt(int256 x) private pure returns (int256 y) {
+        int256 z = (x + 1) / 2;
+        y = x;
+        while (z < (y)) {
+            y = z;
+            z = (x / z + z) / 2;
+        }
+        return y;
+    }
+
+    // A method to get the distance between two points
+    function getDistance(
+        int256 lat,
+        int256 lng,
+        int256 lat1,
+        int256 lng1
+    ) private pure returns (int256) {
+        int256 dist = sqrt(((lat - lat1)**2) + ((lng - lng1)**2));
+        return dist;
+    }
+
+    // A method to check employee distance range
+    function checkEmployeeRange(
+        address add,
+        uint256 lat,
+        uint256 lon
+    ) private {
+        // get the agreed range
+        uint256 agreedRange = employeez[add].acceptedRange;
+
+        // get the employee assigned location
+        int256 lat1 =  employeez[add].latitude;
+        int256 lon1 =  employeez[add].longitude;
+
+        // get the distance between the current location and the agreed location
+        int256 currentRange = getDistance(lat, lon, lat1, lon1);
+
+        if (currentRange > agreedRange) {
+            // fail the contracts state
+        }
+    }
 
     function editCompanyDetails(
         string memory name,
