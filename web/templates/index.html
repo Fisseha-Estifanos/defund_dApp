@@ -276,10 +276,10 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"  crossorigin="anonymous"></script>
     <script>
         //contract related setups
-        const networkId = "http://127.0.0.1:7545"
+        const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0xB8b9458624019b222766F6c7fD4972399E7f8262"
+        const contractAddress = "0x5EE0F34384a5505b94f7B7A7e84E4C66F1647a4E"
         
         const abi = [
     {
@@ -424,6 +424,20 @@
           "internalType": "string",
           "name": "company",
           "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "justInt",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -664,7 +678,8 @@
             await handleNewAccounts(newAccounts)
 
             } catch (error) {
-            console.error(error)
+                console.error(error);
+                alert(error);
             }
         }
 
@@ -700,7 +715,27 @@
 
             } catch (error) {
                 console.error(error)
+                alert(error);
             }
+        }
+
+        // the edit company details button event handler
+        async function editCompanyDetails() {
+          console.log("in edit company details event handler")
+          try {
+              const empName = document.getElementById('employer_name')
+              const compName = document.getElementById('company_name')
+              const empAdd = document.getElementById('employer_address')
+
+              const companyDetails = await smartContract.methods.employer().call();
+              empName.innerHTML = companyDetails.name
+              compName.innerHTML = companyDetails.company
+              empAdd.innerHTML = companyDetails.employer_address
+
+          } catch (error) {
+              console.error(error)
+              alert(error);
+          }
         }
 
         // the add employee button event handler
@@ -719,10 +754,11 @@
             console.log(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range);
             console.log("From account: " + accounts[0])
 
-            const addEmp = await smartContract.methods.createEmployee(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range).send({ from: accounts[0] });
+            const addEmp = await smartContract.methods.createEmployee(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range).send({ from: accounts[0], gas:3000000 });
 
           } catch (error) {
-                console.error(error);
+              console.error(error);
+              alert(error);
           }
         }
 
@@ -736,6 +772,7 @@
 
           } catch (error) {
               console.error(error);
+              alert(error);
           }
         }
 
