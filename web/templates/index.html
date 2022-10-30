@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-<h1> {% block title %} Employer {% endblock %} </h1>
+<h1> {% block title %} Home {% endblock %} </h1>
 {% block content %}
     <br>
     <h1> Welcome to the de fund by location dApp </h1>
@@ -158,21 +158,16 @@
       <h5>Employee Details</h5>
       <div class="container">
         <div class="row form-group">
-          <div id="employye_details">
-            <table>
-              <th>Employee Details</th>
-              <tr>
-                <td> d1 </td> <td> d2 </td> <td> d3 </td>
-              </tr>
-              <tr>
-                <td> d1 </td> <td> d2 </td> <td> d3 </td>
-              </tr>
-              <tr>
-                <td> d1 </td> <td> d2 </td> <td> d3 </td>
-              </tr>
-              <tr>
-                <td> d1 </td> <td> d2 </td> <td> d3 </td>
-              </tr>
+          <div id="employye_details" style="overflow:hidden; overflow-y: scroll; height: 500px;">
+            <table id="employee_details_table" >
+              <thead class="thead-light">
+                <tr>
+                  <th> Id </th>
+                  <th> Name </th>
+                  <th> Address </th>
+                  <th> Contract status </th>
+                </tr>
+              </thead>
             </table>
           </div>
         </div>
@@ -938,21 +933,41 @@
         async function getEmployeeDetails() {
           console.log("in get employee details event handler")
           try {
-            // const total_employeez_details = await smartContract.methods.getAllEmployeez().send({ from: accounts[0], gas: gasFee });
-            // const total_employees_details = await smartContract.methods.getAllEmployees().send({ from: accounts[0], gas: gasFee });
-            // console.log(total_employeez_details);
-            // console.log(total_employees_details);
+            const tot_emp_num = await smartContract.methods.numberOfEmployeesCount().call();
+            for (let i = 0; i < tot_emp_num; i++) {
+              const individual_employee = await smartContract.methods.employees(i).call();
+              
+              var table = document.getElementById("employee_details_table");
+              var rowNode = document.createElement("tr");
+              var cellNodeId = document.createElement("td");
+              var cellNodeName = document.createElement("td");
+              var cellNodeAddress = document.createElement("td");
+              var cellNodeState = document.createElement("td");
+              
+              var rowId = document.createTextNode(i);
+              var rowName = document.createTextNode(individual_employee.name);
+              var rowAddress = document.createTextNode(individual_employee.employeeAddress);
+              var rowContractState = document.createTextNode(individual_employee.contractStatus);
 
-            const total_employee_details_ = await smartContract.methods.employeez("0x402031CAf98DB7870037e827b0A0E240D98A10c8").call();
-            // const total_employee_details__ = await smartContract.methods.employees(0).call();
-            console.log(total_employee_details_);
-            // console.log(total_employee_details__);
-            
-            //alert(total_employeez_details);
-            //let emp1 = total_employees_details[1];
-            //let emp1Name = emp1.name;
-            // console.log(emp1);
-            //console.log(emp1Name);
+              cellNodeId.appendChild(rowId);
+              cellNodeName.appendChild(rowName);
+              cellNodeAddress.appendChild(rowAddress);
+              cellNodeState.appendChild(rowContractState);
+
+              rowNode.appendChild(cellNodeId);
+              rowNode.appendChild(cellNodeName);
+              rowNode.appendChild(cellNodeAddress);
+              rowNode.appendChild(cellNodeState);
+
+              table.appendChild(rowNode);
+            }
+            // table.setAttribute('class', "table table-striped table-hover table-earning");
+            // table.className = "table table-striped table-hover table-earning";
+            table.className = "table table-striped table-hover table-earning";
+            table.classList.add("table")
+            table.classList.add("table-striped")
+            table.classList.add("table-hover")
+            table.classList.add("table-earning")
 
           } catch (error) {
               console.error(error);
