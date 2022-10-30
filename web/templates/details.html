@@ -17,41 +17,41 @@
               <button id="get_number_of_employee" class="btn btn-primary" onclick="getNumberOfEmployees()">Get Total Employee</button>
             </div>
           </div>
-      </div>
+    </div>
       
-      <br>
-      <div id="employee_details" class="rounded border border-info form-group p-3 mb-2 text-dark">
-        <h5>Employee Details</h5>
-        <div class="container">
-          <div class="row form-group">
-            <div id="employye_details" style="overflow:hidden; overflow-y: scroll; overflow-x: scroll; height: 500px;">
-              <table id="employee_details_table" >
-                <thead class="thead-light">
-                  <tr>
-                    <th> Id </th>
-                    <th> Name </th>
-                    <th> Address </th>
-                    <th> Duration </th>
-                    <th> Start Date </th>
-                    <th> Role </th>
-                    <th> Contract status </th>
-                    <th> Balance </th>
-                    <th> Latitude </th>
-                    <th> Latitude offset</th>
-                    <th> Longitude </th>
-                    <th> Longitude offset</th>
-                    <th> Accepted Range </th>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-          </div>
-  
-          <div class="row">
-            <button id="get_employee_details" class="btn btn-primary" onclick="getEmployeeDetails()">Get Employee Details</button>
+    <br>
+    <div id="employee_details" class="rounded border border-info form-group p-3 mb-2 text-dark">
+      <h5>Employee Details</h5>
+      <div class="container">
+        <div class="row form-group">
+          <div id="employye_details" style="overflow:hidden; overflow-y: scroll; overflow-x: scroll; height: 500px;">
+            <table id="employee_details_table" >
+              <thead class="thead-light">
+                <tr>
+                  <th> Id </th>
+                  <th> Name </th>
+                  <th> Employee Address </th>
+                  <th> Duration </th>
+                  <th> Start Date </th>
+                  <th> Role </th>
+                  <th> Contract status </th>
+                  <th> Balance </th>
+                  <th> Latitude </th>
+                  <th> Latitude offset</th>
+                  <th> Longitude </th>
+                  <th> Longitude offset</th>
+                  <th> Accepted Range </th>
+                </tr>
+              </thead>
+            </table>
           </div>
         </div>
+
+        <div class="row">
+          <button id="get_employee_details" class="btn btn-primary" onclick="getEmployeeDetails()">Get Employee Details</button>
+        </div>
       </div>
+    </div>
     
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"  crossorigin="anonymous"></script>
     <script>
@@ -59,7 +59,7 @@
         const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0x032feB1962115C7fa15eDDE2a2F17a2dB29eeE44"
+        const contractAddress = "0xEfe434eeb4D1F0B4d7b3F3Afc2e346E9b1c9DcFe"
         
         const abi =  [
     {
@@ -83,7 +83,32 @@
           "type": "address"
         }
       ],
-      "name": "NewEmployee",
+      "name": "EmployeeAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "date",
+          "type": "uint256"
+        }
+      ],
+      "name": "LocationTracked",
       "type": "event"
     },
     {
@@ -320,8 +345,72 @@
       "constant": true
     },
     {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "locations",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locLat",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locLon",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lonOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locationUpdateDate",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
       "inputs": [],
       "name": "numberOfEmployeesCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "numberOfTrackedLocations",
       "outputs": [
         {
           "internalType": "uint256",
@@ -382,6 +471,35 @@
         }
       ],
       "name": "createEmployee",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "latitude",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latitudeOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "longitude",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "longOffset",
+          "type": "uint256"
+        }
+      ],
+      "name": "trackLocation",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -583,7 +701,6 @@
       "type": "function"
     }
   ]
-
         const web3 = new Web3(networkId)
         const smartContract = new web3.eth.Contract(abi, contractAddress)
 
