@@ -44,6 +44,8 @@ contract Refund {
     Employer public employer;
 
     Employee[] public employees;
+    mapping(address => Employee) public employeez;
+    mapping(uint => address) public employeesAddress;
 
     uint256 public numberOfEmployeesCount;
 
@@ -80,7 +82,7 @@ contract Refund {
         employees.push(
             Employee(
                 name,
-                //msg.sender,
+                ////msg.sender,
                 employeeAddress,
                 contractDuration,
                 startDate,
@@ -94,7 +96,25 @@ contract Refund {
                 acceptedRange
             )
         );
+
+        employeez[employeeAddress] = Employee(
+            name,
+            ////msg.sender,
+            employeeAddress,
+            contractDuration,
+            startDate,
+            employeeRole,
+            initialContractStatus,
+            currentBalanceOfEmployee,
+            latitude,
+            latitudeOffset,
+            longitude,
+            longOffset,
+            acceptedRange
+        );
+        employeesAddress[numberOfEmployeesCount] = employeeAddress;
         numberOfEmployeesCount++;
+
         emit NewEmployee(name, employeeAddress);
         //addToIPFS();
     }
@@ -110,14 +130,23 @@ contract Refund {
     }
 
     // a function to get all employees
-    function getAllEmployees() public view returns (Employee[] memory) {
-        return (employees);
+    function getAllEmployeez() public view returns (Employee[] memory) {
+        Employee[] memory ret = new Employee[](numberOfEmployeesCount);
+        for (uint i = 0; i < numberOfEmployeesCount; i++) {
+            ret[i] = employeez[employeesAddress[i]];
+        }
+        return ret;
     }
 
-    // a function to get the employer of this smart contract
-    function getEmployer() public view returns (Employer memory) {
-        return employer;
+    // a function to get all employees
+    function getAllEmployees() public view returns (Employee[] memory) {
+        return employees;
     }
+
+    // // a function to get the employer of this smart contract
+    // // function getEmployer() public view returns (Employer memory) {
+    // //     return employer;
+    // // }
 
     function editCompanyDetails(
         string memory name,

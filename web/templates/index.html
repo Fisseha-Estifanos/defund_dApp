@@ -186,13 +186,28 @@
     <div id="individual_employee_details" class="rounded border border-info form-group p-3 mb-2 text-dark">
       <h5>Individual Employee Detail</h5>
       <div class="container">
-        <div class="row form-group">
-          <label class="form-label">Employee Id</label>
-          <input type="number" class="form-control" id="employee_id" placeholder="input employee id"></input>
-        </div>
         <div class="row">
-          <button id="get_individual_employee_details" class="btn btn-primary" onclick="getIndividualEmployeeDetails()">Get Individual Employee Detail</button>
+          <div class="col-md-6">
+            <div class="row form-group">
+              <label class="form-label">Employee Id</label>
+              <input type="number" class="form-control" style="margin-right:0.5cm" id="employee_id" placeholder="input employee id"></input>
+            </div>
+            <div class="row">
+              <button id="get_individual_employee_details" class="btn btn-primary" onclick="getIndividualEmployeeDetails()">Get Individual Employee Detail</button>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="row form-group">
+              <label class="form-label">Employee address</label>
+              <input type="text" class="form-control" id="ind_employee_address" placeholder="input employee address"></input>
+            </div>
+            <div class="row">
+              <button id="get_individual_employee_details" class="btn btn-primary" onclick="getIndividualEmployeeDetailsAddress()">Get Individual Employee Detail</button>
+            </div>
+          </div>
         </div>
+        
 
         <br>
         <br>
@@ -279,9 +294,9 @@
         const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0xCbc17EDB47C082Fb27AE81C97Ab38eaC5949286b"
+        const contractAddress = "0x032feB1962115C7fa15eDDE2a2F17a2dB29eeE44"
         
-        const abi = [
+        const abi =  [
     {
       "inputs": [],
       "stateMutability": "nonpayable",
@@ -354,6 +369,101 @@
         }
       ],
       "name": "employees",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractStartDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "employeeRole",
+          "type": "string"
+        },
+        {
+          "internalType": "enum Refund.ContractStatus",
+          "name": "contractStatus",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "balanceInWei",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locLat",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locLon",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lonOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "acceptedRange",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "employeesAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "employeez",
       "outputs": [
         {
           "internalType": "string",
@@ -534,7 +644,7 @@
     },
     {
       "inputs": [],
-      "name": "getAllEmployees",
+      "name": "getAllEmployeez",
       "outputs": [
         {
           "components": [
@@ -610,7 +720,7 @@
     },
     {
       "inputs": [],
-      "name": "getEmployer",
+      "name": "getAllEmployees",
       "outputs": [
         {
           "components": [
@@ -621,18 +731,63 @@
             },
             {
               "internalType": "address",
-              "name": "employer_address",
+              "name": "employeeAddress",
               "type": "address"
             },
             {
+              "internalType": "uint256",
+              "name": "contractDuration",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contractStartDate",
+              "type": "uint256"
+            },
+            {
               "internalType": "string",
-              "name": "company",
+              "name": "employeeRole",
               "type": "string"
+            },
+            {
+              "internalType": "enum Refund.ContractStatus",
+              "name": "contractStatus",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "balanceInWei",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "locLat",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "latOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "locLon",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lonOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "acceptedRange",
+              "type": "uint256"
             }
           ],
-          "internalType": "struct Refund.Employer",
+          "internalType": "struct Refund.Employee[]",
           "name": "",
-          "type": "tuple"
+          "type": "tuple[]"
         }
       ],
       "stateMutability": "view",
@@ -664,7 +819,6 @@
     }
   ]
 
-
         const web3 = new Web3(networkId)
         const smartContract = new web3.eth.Contract(abi, contractAddress)
         
@@ -686,7 +840,7 @@
         }
 
         // the one that populates the accounts
-        async function handleNewAccounts (newAccounts) {
+        async function handleNewAccounts(newAccounts) {
             const accountsAddress = document.getElementById('connection_address')
             const walletConnection = document.getElementById('connection_status')
 
@@ -767,12 +921,38 @@
         }
 
         // the get total number of employees button event handler
-        async function getNumberOfEmployees () {
+        async function getNumberOfEmployees() {
           console.log("in get total number of employees event handler");
           try {
             const tot_num = await smartContract.methods.numberOfEmployeesCount().call();
             const tot_emp_num_label = document.getElementById('number_of_employees');
             tot_emp_num_label.innerHTML = tot_num;
+
+          } catch (error) {
+              console.error(error);
+              alert(error);
+          }
+        }
+
+        // the get employee details button event handler
+        async function getEmployeeDetails() {
+          console.log("in get employee details event handler")
+          try {
+            // const total_employeez_details = await smartContract.methods.getAllEmployeez().send({ from: accounts[0], gas: gasFee });
+            // const total_employees_details = await smartContract.methods.getAllEmployees().send({ from: accounts[0], gas: gasFee });
+            // console.log(total_employeez_details);
+            // console.log(total_employees_details);
+
+            const total_employee_details_ = await smartContract.methods.employeez("0x402031CAf98DB7870037e827b0A0E240D98A10c8").call();
+            // const total_employee_details__ = await smartContract.methods.employees(0).call();
+            console.log(total_employee_details_);
+            // console.log(total_employee_details__);
+            
+            //alert(total_employeez_details);
+            //let emp1 = total_employees_details[1];
+            //let emp1Name = emp1.name;
+            // console.log(emp1);
+            //console.log(emp1Name);
 
           } catch (error) {
               console.error(error);
@@ -825,9 +1005,54 @@
           }
         }
 
+        // get individual employee details event handler
+        async function getIndividualEmployeeDetailsAddress() {
+          console.log("in get individual employee details (address) event handler");
+          try {
+            // get the desired id
+            const the_employee_address = document.getElementById('ind_employee_address').value;
+            console.log(the_employee_address)
+            // get the individual employee
+            const individual_employee = await smartContract.methods.employeez(the_employee_address).call();
+
+            // set the individual employee details
+            const ind_emp_name = document.getElementById('individual_employee_name');
+            const ind_emp_addr = document.getElementById('individual_employee_address');
+            const ind_emp_contract_dur = document.getElementById('individual_contract_duration');
+            const ind_emp_start_date = document.getElementById('individual_contract_start_date');
+            const ind_emp_role = document.getElementById('individual_employee_role');
+            const ind_emp_contract_status = document.getElementById('individual_contract_status');
+            const ind_emp_balance = document.getElementById('individual_employee_balance');
+            const ind_emp_loc_lat = document.getElementById('individual_employee_lat');
+            const ind_emp_loc_lat_offset = document.getElementById('individual_employee_lat_offset');
+            const ind_emp_loc_lon = document.getElementById('individual_employee_lon');
+            const ind_emp_loc_lon_offset = document.getElementById('individual_employee_lon_offset');
+            const ind_emp_accepted_range = document.getElementById('individual_employee_accepted_range');
+            console.log("got all labels")
+
+            ind_emp_name.innerHTML = individual_employee.name
+            ind_emp_addr.innerHTML = individual_employee.employeeAddress
+            ind_emp_contract_dur.innerHTML = individual_employee.contractDuration
+            ind_emp_start_date.innerHTML = individual_employee.contractStartDate
+            ind_emp_role.innerHTML = individual_employee.employeeRole
+            ind_emp_contract_status.innerHTML = individual_employee.contractStatus
+            ind_emp_balance.innerHTML = individual_employee.balanceInWei
+            ind_emp_loc_lat.innerHTML = individual_employee.locLat
+            ind_emp_loc_lat_offset.innerHTML = individual_employee.latOffset
+            ind_emp_loc_lon.innerHTML = individual_employee.locLon
+            ind_emp_loc_lon_offset.innerHTML = individual_employee.lonOffset
+            ind_emp_accepted_range.innerHTML = individual_employee.acceptedRange
+            console.log("set all labels")
+
+          } catch (error) {
+              console.error(error);
+              alert(error);
+          }
+        }
+
         // get account balance event handler
         async function getAccountBalance() {
-          console.log("in get account balance")
+          console.log("in get account balance event handler")
           try {
             // get the account address
             const acc_add = document.getElementById('account_address').value;
