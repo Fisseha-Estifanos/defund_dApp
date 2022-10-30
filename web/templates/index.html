@@ -79,7 +79,7 @@
 
               <br>
               <div class="row">
-                <button id="edit_company_details" class="btn btn-primary" onclick="editCompanyDetails()">Edit Details</button>
+                <button id="edit_company_details" class="btn btn-primary" onclick="editCompanyDetails()">Update Details</button>
               </div>
             </div>
           </div>
@@ -279,7 +279,7 @@
         const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0x5EE0F34384a5505b94f7B7A7e84E4C66F1647a4E"
+        const contractAddress = "0xCbc17EDB47C082Fb27AE81C97Ab38eaC5949286b"
         
         const abi = [
     {
@@ -330,6 +330,20 @@
       ],
       "name": "Transfer",
       "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "compDetailUpdateStatus",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -424,20 +438,6 @@
           "internalType": "string",
           "name": "company",
           "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function",
-      "constant": true
-    },
-    {
-      "inputs": [],
-      "name": "justInt",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -664,10 +664,12 @@
     }
   ]
 
+
         const web3 = new Web3(networkId)
         const smartContract = new web3.eth.Contract(abi, contractAddress)
         
         let accounts
+        const gasFee = 3000000;
 
         // to connect with metamask
         const onClickConnect = async () => {
@@ -723,14 +725,15 @@
         async function editCompanyDetails() {
           console.log("in edit company details event handler")
           try {
-              const empName = document.getElementById('employer_name')
-              const compName = document.getElementById('company_name')
-              const empAdd = document.getElementById('employer_address')
+              const empName = document.getElementById('edit_employer_name').value;
+              const compName = document.getElementById('edit_company_name').value;
+              const empAdd = document.getElementById('edit_employer_address').value;
+              console.log(empName, compName, empAdd)
+              console.log("From account: " + accounts[0])
 
-              const companyDetails = await smartContract.methods.employer().call();
-              empName.innerHTML = companyDetails.name
-              compName.innerHTML = companyDetails.company
-              empAdd.innerHTML = companyDetails.employer_address
+              const companyDetails = await smartContract.methods.editCompanyDetails(empName, empAdd, compName).send({from: accounts[0], gas: gasFee});
+              const com_det = await smartContract.methods.compDetailUpdateStatus().call();
+              alert(com_det);
 
           } catch (error) {
               console.error(error)
@@ -754,7 +757,8 @@
             console.log(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range);
             console.log("From account: " + accounts[0])
 
-            const addEmp = await smartContract.methods.createEmployee(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range).send({ from: accounts[0], gas:3000000 });
+            const addEmp = await smartContract.methods.createEmployee(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range).send({ from: accounts[0], gas: gasFee });
+            alert('Employee added')
 
           } catch (error) {
               console.error(error);
