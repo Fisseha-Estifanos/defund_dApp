@@ -47,12 +47,13 @@ contract Refund {
 
     uint256 public numberOfEmployeesCount;
 
-    uint256 public justInt;
+    string public compDetailUpdateStatus;
 
     constructor() {
         // set the contract's owner (employer)
         employer = Employer("f0xtr0t", msg.sender, "Forward Operations Base");
         numberOfEmployeesCount = 0;
+        compDetailUpdateStatus = "";
     }
 
     // A method to create employees
@@ -123,6 +124,11 @@ contract Refund {
         address addr,
         string memory companyName
     ) public {
+        if (msg.sender != employer.employer_address) {
+            compDetailUpdateStatus = "This account can not update details";
+            return;
+        }
         employer = Employer(name, addr, companyName);
+        compDetailUpdateStatus = "Company details updated";
     }
 }
