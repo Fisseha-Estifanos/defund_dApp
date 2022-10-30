@@ -47,6 +47,8 @@ contract Refund {
 
     uint256 public numberOfEmployeesCount;
 
+    uint256 public justInt;
+
     constructor() {
         // set the contract's owner (employer)
         employer = Employer("f0xtr0t", msg.sender, "Forward Operations Base");
