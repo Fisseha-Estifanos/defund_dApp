@@ -289,9 +289,9 @@
         const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0xEfe434eeb4D1F0B4d7b3F3Afc2e346E9b1c9DcFe"
+        const contractAddress = "0x17CaBD90dbA1cB3Aa4709C976e94482cb1C4Ba2C"
         
-        const abi =  [
+        const abi = [
     {
       "inputs": [],
       "stateMutability": "nonpayable",
@@ -426,9 +426,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "locLat",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -436,9 +436,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "locLon",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -446,9 +446,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "acceptedRange",
-          "type": "uint256"
+          "type": "int256"
         }
       ],
       "stateMutability": "view",
@@ -521,9 +521,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "locLat",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -531,9 +531,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "locLon",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -541,9 +541,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "acceptedRange",
-          "type": "uint256"
+          "type": "int256"
         }
       ],
       "stateMutability": "view",
@@ -595,9 +595,9 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "locLat",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -605,9 +605,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "locLon",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -661,6 +661,29 @@
         },
         {
           "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "companyName",
+          "type": "string"
+        }
+      ],
+      "name": "editCompanyDetails",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
           "name": "employeeAddress",
           "type": "address"
         },
@@ -675,9 +698,9 @@
           "type": "string"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "latitude",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -685,9 +708,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "longitude",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -695,9 +718,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "acceptedRange",
-          "type": "uint256"
+          "type": "int256"
         }
       ],
       "name": "createEmployee",
@@ -709,9 +732,9 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "latitude",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -719,9 +742,9 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint256",
+          "internalType": "int256",
           "name": "longitude",
-          "type": "uint256"
+          "type": "int256"
         },
         {
           "internalType": "uint256",
@@ -797,9 +820,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
+              "internalType": "int256",
               "name": "locLat",
-              "type": "uint256"
+              "type": "int256"
             },
             {
               "internalType": "uint256",
@@ -807,9 +830,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
+              "internalType": "int256",
               "name": "locLon",
-              "type": "uint256"
+              "type": "int256"
             },
             {
               "internalType": "uint256",
@@ -817,9 +840,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
+              "internalType": "int256",
               "name": "acceptedRange",
-              "type": "uint256"
+              "type": "int256"
             }
           ],
           "internalType": "struct Refund.Employee[]",
@@ -873,9 +896,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
+              "internalType": "int256",
               "name": "locLat",
-              "type": "uint256"
+              "type": "int256"
             },
             {
               "internalType": "uint256",
@@ -883,9 +906,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
+              "internalType": "int256",
               "name": "locLon",
-              "type": "uint256"
+              "type": "int256"
             },
             {
               "internalType": "uint256",
@@ -893,9 +916,9 @@
               "type": "uint256"
             },
             {
-              "internalType": "uint256",
+              "internalType": "int256",
               "name": "acceptedRange",
-              "type": "uint256"
+              "type": "int256"
             }
           ],
           "internalType": "struct Refund.Employee[]",
@@ -910,27 +933,24 @@
     {
       "inputs": [
         {
-          "internalType": "string",
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "internalType": "address",
-          "name": "addr",
+          "internalType": "address payable",
+          "name": "to",
           "type": "address"
         },
         {
-          "internalType": "string",
-          "name": "companyName",
-          "type": "string"
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
         }
       ],
-      "name": "editCompanyDetails",
+      "name": "makeTransaction",
       "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
     }
   ]
+        
         const web3 = new Web3(networkId)
         const smartContract = new web3.eth.Contract(abi, contractAddress)
         
@@ -1052,7 +1072,12 @@
           try {
             const tot_emp_num = await smartContract.methods.numberOfEmployeesCount().call();
             for (let i = 0; i < tot_emp_num; i++) {
-              const individual_employee = await smartContract.methods.employees(i).call();
+              // get the addresses of employees
+              const cur_emp_addr = await smartContract.methods.employeesAddress(i).call();
+              console.log(i, cur_emp_addr);
+              
+              // const individual_employee = await smartContract.methods.employees(i).call();
+              const individual_employee = await smartContract.methods.employeez(cur_emp_addr).call();
               
               var table = document.getElementById("employee_details_table");
               var rowNode = document.createElement("tr");
