@@ -25,7 +25,7 @@ contract Refund {
         uint256 latOffset;
         int256 locLon;
         uint256 lonOffset;
-        uint256 acceptedRange;
+        int256 acceptedRange;
     }
 
     // Employer data structure
@@ -73,7 +73,21 @@ contract Refund {
         compDetailUpdateStatus = "";
     }
 
-    // A method to create employees
+    // a method to edit company details
+    function editCompanyDetails(
+        string memory name,
+        address addr,
+        string memory companyName
+    ) public {
+        if (msg.sender != employer.employer_address) {
+            compDetailUpdateStatus = "This account can not update details";
+            return;
+        }
+        employer = Employer(name, addr, companyName);
+        compDetailUpdateStatus = "Company details updated";
+    }
+
+    // a method to create employees
     function createEmployee(
         string memory name,
         address employeeAddress,
@@ -83,7 +97,7 @@ contract Refund {
         uint256 latitudeOffset,
         int256 longitude,
         uint256 longOffset,
-        uint256 acceptedRange
+        int256 acceptedRange
     ) public payable {
         // the contract starting date
         uint256 startDate = block.timestamp;
@@ -130,7 +144,56 @@ contract Refund {
         emit EmployeeAdded(name, employeeAddress);
     }
 
-    // A method to track employee location
+    // a method that calculates square root
+    function sqrt(int256 x) private pure returns (int256 y) {
+        int256 z = (x + 1) / 2;
+        y = x;
+        while (z < (y)) {
+            y = z;
+            z = (x / z + z) / 2;
+        }
+        return y;
+    }
+
+    // a method to get the distance between two points
+    function getDistance(
+        int256 lat,
+        int256 lng,
+        int256 lat1,
+        int256 lng1
+    ) private pure returns (int256) {
+        int256 dist = sqrt(((lat - lat1)**2) + ((lng - lng1)**2));
+        return dist;
+    }
+
+    // a method to check employee distance range
+    function checkEmployeeRange(
+        address employee_address,
+        int256 lat,
+        int256 lon
+    ) private {
+        // Get the employee
+        Employee memory employee = employeez[employee_address];
+
+        // get the distance between the current location and the agreed location
+        int256 currentRange = getDistance(
+            lat,
+            lon,
+            employee.locLat,
+            employee.locLon
+        );
+
+        if (currentRange > employee.acceptedRange) {
+            // fail the contracts state
+            employee.contractStatus = ContractStatus.REJECTED;
+        } else {
+            // activate the contract status
+            employee.contractStatus = ContractStatus.ACTIVATED;
+        }
+        employeez[msg.sender] = employee;
+    }
+
+    // a method to track employee location
     function trackLocation(
         int256 latitude,
         uint256 latitudeOffset,
@@ -140,12 +203,12 @@ contract Refund {
         // the location track date
         uint256 locationUpdatedAt = block.timestamp;
 
-        // the employee name
-        string memory employeeName = employeez[msg.sender].name;
+        // get the employee
+        Employee memory current_employee = employeez[msg.sender];
 
         locations.push(
             Locations(
-                employeeName,
+                current_employee.name,
                 msg.sender,
                 latitude,
                 latitudeOffset,
@@ -156,10 +219,16 @@ contract Refund {
         );
 
         numberOfTrackedLocations++;
-        emit LocationTracked(employeeName, msg.sender, locationUpdatedAt);
+        emit LocationTracked(
+            current_employee.name,
+            msg.sender,
+            locationUpdatedAt
+        );
+
+        checkEmployeeRange(msg.sender, latitude, longitude);
     }
 
-    // A method to get balance in wei
+    // a method to get balance in wei
     function getBalance(address balanceAddress) public view returns (uint256) {
         return balanceAddress.balance;
     }
@@ -178,59 +247,21 @@ contract Refund {
         return employees;
     }
 
-    // a method that calculates square root
-    function sqrt(int256 x) private pure returns (int256 y) {
-        int256 z = (x + 1) / 2;
-        y = x;
-        while (z < (y)) {
-            y = z;
-            z = (x / z + z) / 2;
+    // a function that makes the transactions
+    function makeTransaction(address payable to, uint256 amount)
+        public
+        payable
+    {
+        // get the employee to get paid
+        Employee memory cur_emp = employeez[to];
+
+        //get the payer
+        //Employee memory payer = employeez[from];
+
+        // check status
+        if (cur_emp.contractStatus == ContractStatus.ACTIVATED) {
+            to.transfer(amount);
+            cur_emp.contractStatus = ContractStatus.ENDED;
         }
-        return y;
-    }
-
-    // A method to get the distance between two points
-    function getDistance(
-        int256 lat,
-        int256 lng,
-        int256 lat1,
-        int256 lng1
-    ) private pure returns (int256) {
-        int256 dist = sqrt(((lat - lat1)**2) + ((lng - lng1)**2));
-        return dist;
-    }
-
-    // A method to check employee distance range
-    function checkEmployeeRange(
-        address add,
-        uint256 lat,
-        uint256 lon
-    ) private {
-        // get the agreed range
-        uint256 agreedRange = employeez[add].acceptedRange;
-
-        // get the employee assigned location
-        int256 lat1 =  employeez[add].latitude;
-        int256 lon1 =  employeez[add].longitude;
-
-        // get the distance between the current location and the agreed location
-        int256 currentRange = getDistance(lat, lon, lat1, lon1);
-
-        if (currentRange > agreedRange) {
-            // fail the contracts state
-        }
-    }
-
-    function editCompanyDetails(
-        string memory name,
-        address addr,
-        string memory companyName
-    ) public {
-        if (msg.sender != employer.employer_address) {
-            compDetailUpdateStatus = "This account can not update details";
-            return;
-        }
-        employer = Employer(name, addr, companyName);
-        compDetailUpdateStatus = "Company details updated";
     }
 }
