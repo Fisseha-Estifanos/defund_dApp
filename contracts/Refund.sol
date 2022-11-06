@@ -15,7 +15,7 @@ contract Refund {
     // Employee data structure
     struct Employee {
         string name;
-        address employeeAddress;
+        address payable employeeAddress;
         uint256 contractDuration;
         uint256 contractStartDate;
         string employeeRole;
@@ -64,7 +64,7 @@ contract Refund {
 
     string public compDetailUpdateStatus;
 
-    constructor() {
+    constructor() payable {
         // set the contract's owner (employer)
         employer = Employer("f0xtr0t", msg.sender, "Forward Operations Base");
 
@@ -76,7 +76,7 @@ contract Refund {
     // a method to edit company details
     function editCompanyDetails(
         string memory name,
-        address addr,
+        address payable addr,
         string memory companyName
     ) public {
         if (msg.sender != employer.employer_address) {
@@ -90,7 +90,7 @@ contract Refund {
     // a method to create employees
     function createEmployee(
         string memory name,
-        address employeeAddress,
+        address payable employeeAddress,
         uint256 contractDuration,
         string memory employeeRole,
         int256 latitude,
@@ -255,13 +255,19 @@ contract Refund {
         // get the employee to get paid
         Employee memory cur_emp = employeez[to];
 
-        //get the payer
-        //Employee memory payer = employeez[from];
-
         // check status
         if (cur_emp.contractStatus == ContractStatus.ACTIVATED) {
+            // to.transfer(5 ether);
             to.transfer(amount);
             cur_emp.contractStatus = ContractStatus.ENDED;
         }
+    }
+
+    //event emitted when ether received
+    event Log(uint256 amount, uint256 gas);
+
+    // to receive ether into this smart contract
+    receive() external payable {
+        emit Log(msg.value, gasleft());
     }
 }
