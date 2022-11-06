@@ -26,6 +26,7 @@ contract Refund {
         int256 locLon;
         uint256 lonOffset;
         int256 acceptedRange;
+        // TODO: add employee salary
     }
 
     // Employer data structure
@@ -47,8 +48,6 @@ contract Refund {
     }
 
     // declare our state variables
-    event Transfer(address indexed _from, address indexed _to, uint256 _value);
-
     event EmployeeAdded(string name, address employeeAddress);
     event LocationTracked(string name, address employeeAddress, uint256 date);
 
@@ -97,8 +96,8 @@ contract Refund {
         uint256 latitudeOffset,
         int256 longitude,
         uint256 longOffset,
-        int256 acceptedRange
-    ) public payable {
+        int256 acceptedRange // ) public payable {
+    ) public {
         // the contract starting date
         uint256 startDate = block.timestamp;
 
@@ -198,8 +197,8 @@ contract Refund {
         int256 latitude,
         uint256 latitudeOffset,
         int256 longitude,
-        uint256 longOffset
-    ) public payable {
+        uint256 longOffset // ) public payable {
+    ) public {
         // the location track date
         uint256 locationUpdatedAt = block.timestamp;
 
@@ -230,6 +229,10 @@ contract Refund {
 
     // a method to get balance in wei
     function getBalance(address balanceAddress) public view returns (uint256) {
+        // if you want to return this smart contracts balance
+        // this refers to this smart contract address and and you can cast it to address
+        // in order to use the .balance functionality
+        // return address(this).balance;
         return balanceAddress.balance;
     }
 
@@ -247,8 +250,11 @@ contract Refund {
         return employees;
     }
 
-    // a function that makes the transactions
-    function makeTransaction(address payable to, uint256 amount)
+    // event emitted when a transfer is made
+    event TransferMade(address _fromAddress, address _to, uint256 _value);
+
+    // a function that makes the transaction to the Employee or Employer
+    function payEmployeeOrEmployer(address payable to, uint256 amount)
         public
         payable
     {
@@ -259,15 +265,28 @@ contract Refund {
         if (cur_emp.contractStatus == ContractStatus.ACTIVATED) {
             // to.transfer(5 ether);
             to.transfer(amount);
+            emit TransferMade(address(this), to, amount);
             cur_emp.contractStatus = ContractStatus.ENDED;
         }
     }
 
-    //event emitted when ether received
+    // event emitted when ether received
     event Received(address add, uint256 amount, uint256 gas);
 
     // to receive ether into this smart contract
     receive() external payable {
         emit Received(msg.sender, msg.value, gasleft());
+    }
+
+    // event emitted when a escrow is made
+    event EscrowMade(address _fromAddress, address _to, uint256 _value);
+
+    // function that implements the escrow concept
+    function escrow() external payable {
+        // Just to show you how you can access the sent wei
+        if (msg.value < 1000) {
+            revert();
+        }
+        emit EscrowMade(msg.sender, address(this), msg.value);
     }
 }
