@@ -25,12 +25,37 @@
     </div>
 
     <br>
-    <h4>Company</h4>
-    <div id="company_details" class="shadow-lg p-3 bg-white rounded form-group mb-4 text-dark">
+    <!-- <h4>Company</h4> -->
+    <!-- <div id="company_details" class="shadow-lg p-3 bg-white rounded form-group mb-4 text-dark"> -->
       <div class="row">
         <div class="col-md">
+          <h4>Edit company Details</h4>
+          <div id="edit_company_details_container" class="shadow-lg rounded form-group p-3 mb-2 text-dark">
+            <div class="container">
+              <div class="row form-label">
+                <label>Employee Name: </label>
+                <input class="form-control" placeholder="Input name here" id="edit_employer_name"></input> 
+              </div>
+              <div class="row form-label">
+                <label>Employee Address: </label>
+                <input class="form-control" placeholder="Input address here" id="edit_employer_address" type="text"></input> 
+              </div>
+              <div class="row form-label">
+                <label>Company Name: </label>
+                <input class="form-control" placeholder="Input company name here" id="edit_company_name" type="text"></input> 
+              </div>
+
+              <br>
+              <div class="row">
+                <button id="edit_company_details" class="btn btn-primary" onclick="editCompanyDetails()">Update Details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md">
           <h4>Company Details</h4>
-          <div id="company_details" class="shadow rounded form-group p-3 mb-2 text-dark">
+          <div id="company_details" class="shadow-lg rounded form-group p-3 mb-2 text-dark">
               <div class="container">
                   <div class="row form-label">
                       <label>Employee Name: </label>
@@ -59,33 +84,8 @@
               </div>
           </div>
         </div>
-
-        <div class="col-md">
-          <h4>Edit company Details</h4>
-          <div id="edit_company_details_container" class="shadow rounded form-group p-3 mb-2 text-dark">
-            <div class="container">
-              <div class="row form-label">
-                <label>Employee Name: </label>
-                <input class="form-control" id="edit_employer_name"></input> 
-              </div>
-              <div class="row form-label">
-                <label>Employee Address: </label>
-                <input class="form-control" id="edit_employer_address" type="text"></input> 
-              </div>
-              <div class="row form-label">
-                <label>Company Name: </label>
-                <input class="form-control" id="edit_company_name" type="text"></input> 
-              </div>
-
-              <br>
-              <div class="row">
-                <button id="edit_company_details" class="btn btn-primary" onclick="editCompanyDetails()">Update Details</button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
+    <!-- </div> -->
 
     <br>
     <h4>Add Employee</h4>
@@ -188,7 +188,7 @@
               <input type="number" class="form-control" style="margin-right:0.5cm" id="employee_id" placeholder="input employee id"></input>
             </div>
             <div class="row">
-              <button id="get_individual_employee_details" class="btn btn-primary" onclick="getIndividualEmployeeDetails()">Get Individual Employee Detail</button>
+              <button id="get_individual_employee_details_by_Id" class="btn btn-primary" onclick="getIndividualEmployeeDetails()">Get Individual Employee Detail</button>
             </div>
           </div>
 
@@ -198,7 +198,7 @@
               <input type="text" class="form-control" id="ind_employee_address" placeholder="input employee address"></input>
             </div>
             <div class="row">
-              <button id="get_individual_employee_details" class="btn btn-primary" onclick="getIndividualEmployeeDetailsAddress()">Get Individual Employee Detail</button>
+              <button id="get_individual_employee_details_by_Address" class="btn btn-primary" onclick="getIndividualEmployeeDetailsAddress()">Get Individual Employee Detail</button>
             </div>
           </div>
         </div>
