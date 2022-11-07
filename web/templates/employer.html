@@ -289,13 +289,14 @@
         const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0x17CaBD90dbA1cB3Aa4709C976e94482cb1C4Ba2C"
+        const contractAddress = "0x8dB1c9689b3c05E0264781B42c93953FCe43F658"
         
         const abi = [
     {
       "inputs": [],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
+      "stateMutability": "payable",
+      "type": "constructor",
+      "payable": true
     },
     {
       "anonymous": false,
@@ -314,6 +315,31 @@
         }
       ],
       "name": "EmployeeAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_fromAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "EscrowMade",
       "type": "event"
     },
     {
@@ -345,13 +371,38 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "address",
-          "name": "_from",
+          "name": "add",
           "type": "address"
         },
         {
-          "indexed": true,
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "gas",
+          "type": "uint256"
+        }
+      ],
+      "name": "Received",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_fromAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
           "internalType": "address",
           "name": "_to",
           "type": "address"
@@ -363,7 +414,7 @@
           "type": "uint256"
         }
       ],
-      "name": "Transfer",
+      "name": "TransferMade",
       "type": "event"
     },
     {
@@ -396,7 +447,7 @@
           "type": "string"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "employeeAddress",
           "type": "address"
         },
@@ -491,7 +542,7 @@
           "type": "string"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "employeeAddress",
           "type": "address"
         },
@@ -653,6 +704,11 @@
       "constant": true
     },
     {
+      "stateMutability": "payable",
+      "type": "receive",
+      "payable": true
+    },
+    {
       "inputs": [
         {
           "internalType": "string",
@@ -660,7 +716,7 @@
           "type": "string"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "addr",
           "type": "address"
         },
@@ -683,7 +739,7 @@
           "type": "string"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "employeeAddress",
           "type": "address"
         },
@@ -725,9 +781,8 @@
       ],
       "name": "createEmployee",
       "outputs": [],
-      "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -754,9 +809,8 @@
       ],
       "name": "trackLocation",
       "outputs": [],
-      "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -790,7 +844,7 @@
               "type": "string"
             },
             {
-              "internalType": "address",
+              "internalType": "address payable",
               "name": "employeeAddress",
               "type": "address"
             },
@@ -866,7 +920,7 @@
               "type": "string"
             },
             {
-              "internalType": "address",
+              "internalType": "address payable",
               "name": "employeeAddress",
               "type": "address"
             },
@@ -943,7 +997,15 @@
           "type": "uint256"
         }
       ],
-      "name": "makeTransaction",
+      "name": "payEmployeeOrEmployer",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "escrow",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -1031,6 +1093,16 @@
         async function addEmployee() {
           console.log("in add employee event handler");
           try {
+            const theEscrow = await smartContract.methods.escrow().send({ from: accounts[0], value: 10000000000000000000})
+            console.log(theEscrow);
+            alert('Salary secured');
+          } catch (error) {
+              console.error(error);
+              alert(error);
+              return;
+          }
+
+          try {
             const emp_name = document.getElementById('employee_name').value;
             const emp_address = document.getElementById('employee_address').value;
             const contract_dur = document.getElementById('contract_duration').value;
@@ -1044,6 +1116,8 @@
             console.log("From account: " + accounts[0])
 
             const addEmp = await smartContract.methods.createEmployee(emp_name, emp_address, contract_dur, emp_role, emp_lat, emp_lat_off, emp_lon, emp_lon_off, emp_range).send({ from: accounts[0], gas: gasFee });
+
+            
             alert('Employee added')
 
           } catch (error) {
@@ -1060,6 +1134,11 @@
             const tot_emp_num_label = document.getElementById('number_of_employees');
             tot_emp_num_label.innerHTML = tot_num;
 
+            // pay someone
+            const send_to_address = '0x3adb03CA82eB1D4C4CE7De97Fb0bf45f69d2707f';
+            const wei_to_send = 5000000000000000000;
+
+            const  checkAndMakeTransaction = await smartContract.methods.payEmployeeOrEmployer(send_to_address, wei_to_send).send( {from: accounts[0], gas: gasFee } );
           } catch (error) {
               console.error(error);
               alert(error);
@@ -1148,7 +1227,8 @@
             ind_emp_name.innerHTML = individual_employee.name
             ind_emp_addr.innerHTML = individual_employee.employeeAddress
             ind_emp_contract_dur.innerHTML = individual_employee.contractDuration
-            ind_emp_start_date.innerHTML = individual_employee.contractStartDate
+            formatted_time = convertToHumanReadableDate(individual_employee.contractStartDate)
+            ind_emp_start_date.innerHTML = formatted_time
             ind_emp_role.innerHTML = individual_employee.employeeRole
             ind_emp_contract_status.innerHTML = individual_employee.contractStatus
             ind_emp_balance.innerHTML = individual_employee.balanceInWei
@@ -1159,6 +1239,37 @@
             ind_emp_accepted_range.innerHTML = individual_employee.acceptedRange
             console.log("set all labels")
 
+          } catch (error) {
+              console.error(error);
+              alert(error);
+          }
+        }
+
+        // function to convert to readable datetime
+        function convertToHumanReadableDate(unix_timestamp) {
+          try {
+            // let unix_timestamp = 1549312452
+            // Create a new JavaScript Date object based on the timestamp
+            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+            var date = new Date(unix_timestamp * 1000);
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+            var year = date.getFullYear();
+            var month = months[date.getMonth()];
+            var datee = date.getDate();
+
+            // Hours part from the timestamp
+            var hours = date.getHours();
+            // Minutes part from the timestamp
+            var minutes = "0" + date.getMinutes();
+            // Seconds part from the timestamp
+            var seconds = "0" + date.getSeconds();
+
+            // Will display time in 10:30:23 format
+            var formattedTime = datee + ' ' + month + ' ' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+            console.log(formattedTime);
+            return formattedTime;
           } catch (error) {
               console.error(error);
               alert(error);
@@ -1193,7 +1304,8 @@
             ind_emp_name.innerHTML = individual_employee.name
             ind_emp_addr.innerHTML = individual_employee.employeeAddress
             ind_emp_contract_dur.innerHTML = individual_employee.contractDuration
-            ind_emp_start_date.innerHTML = individual_employee.contractStartDate
+            formatted_time = convertToHumanReadableDate(individual_employee.contractStartDate)
+            ind_emp_start_date.innerHTML = formatted_time
             ind_emp_role.innerHTML = individual_employee.employeeRole
             ind_emp_contract_status.innerHTML = individual_employee.contractStatus
             ind_emp_balance.innerHTML = individual_employee.balanceInWei

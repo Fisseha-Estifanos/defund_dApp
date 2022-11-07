@@ -59,13 +59,14 @@
         const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0x17CaBD90dbA1cB3Aa4709C976e94482cb1C4Ba2C"
+        const contractAddress = "0x8dB1c9689b3c05E0264781B42c93953FCe43F658"
         
         const abi = [
     {
       "inputs": [],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
+      "stateMutability": "payable",
+      "type": "constructor",
+      "payable": true
     },
     {
       "anonymous": false,
@@ -84,6 +85,31 @@
         }
       ],
       "name": "EmployeeAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_fromAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "EscrowMade",
       "type": "event"
     },
     {
@@ -115,13 +141,38 @@
       "anonymous": false,
       "inputs": [
         {
-          "indexed": true,
+          "indexed": false,
           "internalType": "address",
-          "name": "_from",
+          "name": "add",
           "type": "address"
         },
         {
-          "indexed": true,
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "gas",
+          "type": "uint256"
+        }
+      ],
+      "name": "Received",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_fromAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
           "internalType": "address",
           "name": "_to",
           "type": "address"
@@ -133,7 +184,7 @@
           "type": "uint256"
         }
       ],
-      "name": "Transfer",
+      "name": "TransferMade",
       "type": "event"
     },
     {
@@ -166,7 +217,7 @@
           "type": "string"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "employeeAddress",
           "type": "address"
         },
@@ -261,7 +312,7 @@
           "type": "string"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "employeeAddress",
           "type": "address"
         },
@@ -423,6 +474,11 @@
       "constant": true
     },
     {
+      "stateMutability": "payable",
+      "type": "receive",
+      "payable": true
+    },
+    {
       "inputs": [
         {
           "internalType": "string",
@@ -430,7 +486,7 @@
           "type": "string"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "addr",
           "type": "address"
         },
@@ -453,7 +509,7 @@
           "type": "string"
         },
         {
-          "internalType": "address",
+          "internalType": "address payable",
           "name": "employeeAddress",
           "type": "address"
         },
@@ -495,9 +551,8 @@
       ],
       "name": "createEmployee",
       "outputs": [],
-      "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -524,9 +579,8 @@
       ],
       "name": "trackLocation",
       "outputs": [],
-      "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "stateMutability": "nonpayable",
+      "type": "function"
     },
     {
       "inputs": [
@@ -560,7 +614,7 @@
               "type": "string"
             },
             {
-              "internalType": "address",
+              "internalType": "address payable",
               "name": "employeeAddress",
               "type": "address"
             },
@@ -636,7 +690,7 @@
               "type": "string"
             },
             {
-              "internalType": "address",
+              "internalType": "address payable",
               "name": "employeeAddress",
               "type": "address"
             },
@@ -713,7 +767,15 @@
           "type": "uint256"
         }
       ],
-      "name": "makeTransaction",
+      "name": "payEmployeeOrEmployer",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "escrow",
       "outputs": [],
       "stateMutability": "payable",
       "type": "function",
@@ -723,6 +785,37 @@
         
         const web3 = new Web3(networkId)
         const smartContract = new web3.eth.Contract(abi, contractAddress)
+
+        // function to convert to readable datetime
+        function convertToHumanReadableDate(unix_timestamp) {
+          try {
+            // let unix_timestamp = 1549312452
+            // Create a new JavaScript Date object based on the timestamp
+            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+            var date = new Date(unix_timestamp * 1000);
+            var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+            var year = date.getFullYear();
+            var month = months[date.getMonth()];
+            var datee = date.getDate();
+
+            // Hours part from the timestamp
+            var hours = date.getHours();
+            // Minutes part from the timestamp
+            var minutes = "0" + date.getMinutes();
+            // Seconds part from the timestamp
+            var seconds = "0" + date.getSeconds();
+
+            // Will display time in 10:30:23 format
+            var formattedTime = datee + ' ' + month + ' ' + year + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+            console.log(formattedTime);
+            return formattedTime;
+          } catch (error) {
+              console.error(error);
+              alert(error);
+          }
+        }
 
         // the get total number of employees button event handler
         async function getNumberOfEmployees() {
@@ -771,7 +864,8 @@
               var rowName = document.createTextNode(individual_employee.name);
               var rowAddress = document.createTextNode(individual_employee.employeeAddress);
               var rowContractDuration = document.createTextNode(individual_employee.contractDuration);
-              var rowContractStartDate = document.createTextNode(individual_employee.contractStartDate);
+              formatted_time = convertToHumanReadableDate(individual_employee.contractStartDate)
+              var rowContractStartDate = document.createTextNode(formatted_time);
               var rowEmployeeRole = document.createTextNode(individual_employee.employeeRole);
               var rowContractStatus = document.createTextNode(individual_employee.contractStatus);
               var rowContractBalance = document.createTextNode(individual_employee.balanceInWei);

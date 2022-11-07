@@ -54,667 +54,729 @@
         const networkId = "http://127.0.0.1:8545"
         console.log("Current network Id: " + networkId)
 
-        const contractAddress = "0x17CaBD90dbA1cB3Aa4709C976e94482cb1C4Ba2C"
+        const contractAddress = "0x8dB1c9689b3c05E0264781B42c93953FCe43F658"
         
         const abi =  [
+    {
+      "inputs": [],
+      "stateMutability": "payable",
+      "type": "constructor",
+      "payable": true
+    },
+    {
+      "anonymous": false,
+      "inputs": [
         {
-          "inputs": [],
-          "stateMutability": "nonpayable",
-          "type": "constructor"
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
         },
         {
-          "anonymous": false,
-          "inputs": [
+          "indexed": false,
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        }
+      ],
+      "name": "EmployeeAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_fromAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "EscrowMade",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "date",
+          "type": "uint256"
+        }
+      ],
+      "name": "LocationTracked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "add",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "gas",
+          "type": "uint256"
+        }
+      ],
+      "name": "Received",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_fromAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_value",
+          "type": "uint256"
+        }
+      ],
+      "name": "TransferMade",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "compDetailUpdateStatus",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "employees",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address payable",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractStartDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "employeeRole",
+          "type": "string"
+        },
+        {
+          "internalType": "enum Refund.ContractStatus",
+          "name": "contractStatus",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "balanceInWei",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "locLat",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "locLon",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lonOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "acceptedRange",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "employeesAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "employeez",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address payable",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractStartDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "employeeRole",
+          "type": "string"
+        },
+        {
+          "internalType": "enum Refund.ContractStatus",
+          "name": "contractStatus",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint256",
+          "name": "balanceInWei",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "locLat",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "locLon",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lonOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "acceptedRange",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "employer",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "employer_address",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "company",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "locations",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "int256",
+          "name": "locLat",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "locLon",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lonOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "locationUpdateDate",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "numberOfEmployeesCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "numberOfTrackedLocations",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive",
+      "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address payable",
+          "name": "addr",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "companyName",
+          "type": "string"
+        }
+      ],
+      "name": "editCompanyDetails",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "address payable",
+          "name": "employeeAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "contractDuration",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "employeeRole",
+          "type": "string"
+        },
+        {
+          "internalType": "int256",
+          "name": "latitude",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latitudeOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "longitude",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "longOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "acceptedRange",
+          "type": "int256"
+        }
+      ],
+      "name": "createEmployee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "int256",
+          "name": "latitude",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "latitudeOffset",
+          "type": "uint256"
+        },
+        {
+          "internalType": "int256",
+          "name": "longitude",
+          "type": "int256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "longOffset",
+          "type": "uint256"
+        }
+      ],
+      "name": "trackLocation",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "balanceAddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getAllEmployeez",
+      "outputs": [
+        {
+          "components": [
             {
-              "indexed": false,
               "internalType": "string",
               "name": "name",
               "type": "string"
             },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "employeeAddress",
-              "type": "address"
-            }
-          ],
-          "name": "EmployeeAdded",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "employeeAddress",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "date",
-              "type": "uint256"
-            }
-          ],
-          "name": "LocationTracked",
-          "type": "event"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_from",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "_to",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "_value",
-              "type": "uint256"
-            }
-          ],
-          "name": "Transfer",
-          "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "compDetailUpdateStatus",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "employees",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "employeeAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "contractDuration",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "contractStartDate",
-              "type": "uint256"
-            },
-            {
-              "internalType": "string",
-              "name": "employeeRole",
-              "type": "string"
-            },
-            {
-              "internalType": "enum Refund.ContractStatus",
-              "name": "contractStatus",
-              "type": "uint8"
-            },
-            {
-              "internalType": "uint256",
-              "name": "balanceInWei",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "locLat",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "latOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "locLon",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "lonOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "acceptedRange",
-              "type": "int256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "employeesAddress",
-          "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "name": "employeez",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "employeeAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "contractDuration",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "contractStartDate",
-              "type": "uint256"
-            },
-            {
-              "internalType": "string",
-              "name": "employeeRole",
-              "type": "string"
-            },
-            {
-              "internalType": "enum Refund.ContractStatus",
-              "name": "contractStatus",
-              "type": "uint8"
-            },
-            {
-              "internalType": "uint256",
-              "name": "balanceInWei",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "locLat",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "latOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "locLon",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "lonOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "acceptedRange",
-              "type": "int256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [],
-          "name": "employer",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "employer_address",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "company",
-              "type": "string"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "name": "locations",
-          "outputs": [
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "employeeAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "int256",
-              "name": "locLat",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "latOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "locLon",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "lonOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "locationUpdateDate",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [],
-          "name": "numberOfEmployeesCount",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [],
-          "name": "numberOfTrackedLocations",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "addr",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "companyName",
-              "type": "string"
-            }
-          ],
-          "name": "editCompanyDetails",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "address",
-              "name": "employeeAddress",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "contractDuration",
-              "type": "uint256"
-            },
-            {
-              "internalType": "string",
-              "name": "employeeRole",
-              "type": "string"
-            },
-            {
-              "internalType": "int256",
-              "name": "latitude",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "latitudeOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "longitude",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "longOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "acceptedRange",
-              "type": "int256"
-            }
-          ],
-          "name": "createEmployee",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function",
-          "payable": true
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "int256",
-              "name": "latitude",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "latitudeOffset",
-              "type": "uint256"
-            },
-            {
-              "internalType": "int256",
-              "name": "longitude",
-              "type": "int256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "longOffset",
-              "type": "uint256"
-            }
-          ],
-          "name": "trackLocation",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function",
-          "payable": true
-        },
-        {
-          "inputs": [
-            {
-              "internalType": "address",
-              "name": "balanceAddress",
-              "type": "address"
-            }
-          ],
-          "name": "getBalance",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [],
-          "name": "getAllEmployeez",
-          "outputs": [
-            {
-              "components": [
-                {
-                  "internalType": "string",
-                  "name": "name",
-                  "type": "string"
-                },
-                {
-                  "internalType": "address",
-                  "name": "employeeAddress",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "contractDuration",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "contractStartDate",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "string",
-                  "name": "employeeRole",
-                  "type": "string"
-                },
-                {
-                  "internalType": "enum Refund.ContractStatus",
-                  "name": "contractStatus",
-                  "type": "uint8"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "balanceInWei",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "locLat",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "latOffset",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "locLon",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "lonOffset",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "acceptedRange",
-                  "type": "int256"
-                }
-              ],
-              "internalType": "struct Refund.Employee[]",
-              "name": "",
-              "type": "tuple[]"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [],
-          "name": "getAllEmployees",
-          "outputs": [
-            {
-              "components": [
-                {
-                  "internalType": "string",
-                  "name": "name",
-                  "type": "string"
-                },
-                {
-                  "internalType": "address",
-                  "name": "employeeAddress",
-                  "type": "address"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "contractDuration",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "contractStartDate",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "string",
-                  "name": "employeeRole",
-                  "type": "string"
-                },
-                {
-                  "internalType": "enum Refund.ContractStatus",
-                  "name": "contractStatus",
-                  "type": "uint8"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "balanceInWei",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "locLat",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "latOffset",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "locLon",
-                  "type": "int256"
-                },
-                {
-                  "internalType": "uint256",
-                  "name": "lonOffset",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "int256",
-                  "name": "acceptedRange",
-                  "type": "int256"
-                }
-              ],
-              "internalType": "struct Refund.Employee[]",
-              "name": "",
-              "type": "tuple[]"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function",
-          "constant": true
-        },
-        {
-          "inputs": [
             {
               "internalType": "address payable",
-              "name": "to",
+              "name": "employeeAddress",
               "type": "address"
             },
             {
               "internalType": "uint256",
-              "name": "amount",
+              "name": "contractDuration",
               "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contractStartDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "employeeRole",
+              "type": "string"
+            },
+            {
+              "internalType": "enum Refund.ContractStatus",
+              "name": "contractStatus",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "balanceInWei",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "locLat",
+              "type": "int256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "latOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "locLon",
+              "type": "int256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lonOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "acceptedRange",
+              "type": "int256"
             }
           ],
-          "name": "makeTransaction",
-          "outputs": [],
-          "stateMutability": "payable",
-          "type": "function",
-          "payable": true
+          "internalType": "struct Refund.Employee[]",
+          "name": "",
+          "type": "tuple[]"
         }
-      ]
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [],
+      "name": "getAllEmployees",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "address payable",
+              "name": "employeeAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contractDuration",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "contractStartDate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "employeeRole",
+              "type": "string"
+            },
+            {
+              "internalType": "enum Refund.ContractStatus",
+              "name": "contractStatus",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "balanceInWei",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "locLat",
+              "type": "int256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "latOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "locLon",
+              "type": "int256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lonOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "acceptedRange",
+              "type": "int256"
+            }
+          ],
+          "internalType": "struct Refund.Employee[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "constant": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "payEmployeeOrEmployer",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "escrow",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function",
+      "payable": true
+    }
+  ]
         
         const web3 = new Web3(networkId)
         const smartContract = new web3.eth.Contract(abi, contractAddress)
