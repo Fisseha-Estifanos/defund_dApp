@@ -1077,6 +1077,9 @@
               console.log(i, cur_emp_addr);
               
               // const individual_employee = await smartContract.methods.employees(i).call();
+              // TODO: Solve this problem here, it returns redundant users when called
+              // the problem is the function below gets same address sometimes and gets the same
+              // person from the employeez array
               const individual_employee = await smartContract.methods.employeez(cur_emp_addr).call();
               
               var table = document.getElementById("employee_details_table");
